@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>李焕鹏 · 把想法变成现实 | AI 应用与独立创造</title>
+<meta name="description" content="你好，我是李焕鹏。用工程思维理解业务，用 AI 把想法变成真实产品。这里是我的 8 个开源项目、工作经历与交互实验。" />
+<meta name="theme-color" content="#4c9bf7" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232f5bff'/%3E%3Cpath d='M19 15h8v28h20v8H19z' fill='%23e6f1ff'/%3E%3Ccircle cx='44' cy='23' r='8' fill='%2389caff'/%3E%3C/svg%3E" />
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+<style>
+  :root{
+    /* ===== Radix UI Colors ===== */
+    /* Slate (neutral) */
+    --slate-1:#fcfcfd; --slate-2:#f8f9fb; --slate-3:#f1f3f6; --slate-4:#e9edf2;
+    --slate-5:#dfe4eb; --slate-6:#d3dae3; --slate-7:#c2cbd6; --slate-8:#a7b1bf;
+    --slate-9:#8b96a5; --slate-10:#647084; --slate-11:#414c5d; --slate-12:#1c2530;
+    /* Blue (primary) */
+    --blue-3:#edf5ff; --blue-4:#ddecfe; --blue-6:#aacbfe; --blue-8:#659ef9;
+    --blue-9:#0090ff; --blue-11:#006adc; --blue-12:#00254d;
+    /* Violet (accent) */
+    --violet-3:#f6f2fe; --violet-4:#ede7fd; --violet-6:#caaefa; --violet-9:#7c5cff; --violet-11:#5b32c4;
+    /* Semantic */
+    --green-9:#30a46c; --amber-9:#ffb224; --red-9:#e5484d; --cyan-9:#22b8cf;
+
+    /* ===== Usage mapping (follow Radix spec) ===== */
+    --bg:var(--slate-1);
+    --surface:var(--slate-2);
+    --surface-2:var(--slate-3);
+    --text:var(--slate-12);
+    --text-2:var(--slate-11);
+    --muted:var(--slate-10);
+    --border:var(--slate-6);
+    --border-strong:var(--slate-7);
+    --primary:var(--blue-9);
+    --primary-strong:var(--blue-11);
+    --primary-surface:var(--blue-3);
+    --accent:var(--violet-9);
+    --accent-strong:var(--violet-11);
+    --accent-surface:var(--violet-3);
+
+    /* ===== Type scale: 4 sizes only, min 12px ===== */
+    --fs-1:12px;   /* caption / labels / tags / inputs */
+    --fs-2:14px;   /* body */
+    --fs-3:18px;   /* subhead: project name, panel head, timeline h3 */
+    --fs-4:28px;   /* display: hero name, section title, stat number */
+
+    /* ===== Radii: concentric (inner = outer - gap) ===== */
+    --r-1:12px;    /* outer card / stage / modal */
+    --r-2:8px;     /* nested panel / demo / input */
+    --r-3:6px;     /* small */
+    --pill:999px;
+
+    --ease:cubic-bezier(.2,.7,.3,1);
+    --dur:250ms;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,-apple-system,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.65;font-size:var(--fs-2);
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--violet-4)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  section{padding:72px 0}
+  .sec-head{margin-bottom:28px}
+  .sec-head h2{font-size:var(--fs-4);font-weight:800;letter-spacing:-.01em}
+  .sec-head .en{font-size:var(--fs-1);font-weight:600;color:var(--muted);margin-left:8px;letter-spacing:.04em}
+  .tag{display:inline-block;font-size:var(--fs-1);font-weight:700;color:var(--accent-strong);
+    background:var(--accent-surface);padding:2px 10px;border-radius:var(--pill);margin-left:8px;vertical-align:middle}
+
+  /* ===== Nav ===== */
+  nav{position:sticky;top:0;z-index:80;background:rgba(252,252,253,.85);
+    backdrop-filter:saturate(180%) blur(12px);border-bottom:.5px solid var(--border)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{font-weight:800;font-size:var(--fs-3);color:var(--text);cursor:pointer;letter-spacing:-.01em}
+  .nav-links{display:flex;gap:4px;flex-wrap:wrap}
+  .nav-links a{padding:7px 13px;border-radius:var(--pill);font-size:var(--fs-2);color:var(--text-2);
+    transition:background var(--dur) ease-out,color var(--dur) ease-out}
+  .nav-links a:hover{background:var(--surface);color:var(--primary-strong)}
+  .nav-links a.active{background:var(--primary-surface);color:var(--primary-strong);font-weight:700}
+  .menu-btn{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:8px;cursor:pointer}
+  .menu-btn span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform var(--dur) ease-out,opacity var(--dur) ease-out}
+  .menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .menu-btn.open span:nth-child(2){opacity:0}
+  .menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .mobile-menu{position:fixed;inset:60px 0 auto 0;background:var(--bg);border-bottom:.5px solid var(--border);
+    display:none;flex-direction:column;padding:10px 18px 16px;z-index:99}
+  .mobile-menu.show{display:flex}
+  .mobile-menu a{padding:12px 14px;border-radius:var(--r-2);font-size:var(--fs-2);font-weight:700;color:var(--text)}
+  .mobile-menu a:hover{background:var(--surface)}
+
+  /* ===== Hero ===== */
+  .hero{background:var(--bg)}
+  .hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;min-height:84vh;padding-top:56px;padding-bottom:56px}
+  .hero h1{font-size:var(--fs-4);line-height:1.12;font-weight:800;letter-spacing:-.02em}
+  .hero h1 .name{display:block;color:var(--primary);margin-top:4px}
+  .hero .role{display:inline-block;margin-top:16px;padding:6px 14px;border-radius:var(--pill);
+    background:var(--surface);color:var(--text-2);font-weight:700;font-size:var(--fs-2);border:.5px solid var(--border)}
+  .hero .tagline{margin-top:18px;font-size:var(--fs-2);color:var(--text-2);max-width:540px}
+  .hero .tagline b{color:var(--text);font-weight:700}
+  .skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .skills span{background:var(--surface);border:.5px solid var(--border);padding:6px 12px;border-radius:var(--pill);
+    font-size:var(--fs-1);color:var(--text-2);font-weight:600}
+  .hero .loc{margin-top:16px;font-size:var(--fs-1);color:var(--muted)}
+  .hero-actions{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
+  .btn{border:none;cursor:pointer;font-weight:700;font-size:var(--fs-2);padding:12px 22px;border-radius:var(--pill);
+    transition:background var(--dur) ease-out,color var(--dur) ease-out;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+  .btn-primary{background:var(--primary);color:#fff}
+  .btn-primary:hover{background:var(--primary-strong)}
+  .btn-ghost{background:var(--surface);color:var(--text);border:.5px solid var(--border)}
+  .btn-ghost:hover{background:var(--surface-2)}
+  .hero-right{display:flex;align-items:center;justify-content:center}
+  .avatar{width:200px;height:200px;border-radius:50%;overflow:hidden;background:var(--primary-surface);
+    border:.5px solid var(--border);display:flex;align-items:center;justify-content:center}
+  .avatar img{width:100%;height:100%;object-fit:cover}
+  .avatar-fb{font-size:64px;font-weight:800;color:var(--primary-strong)}
+
+  /* ===== Stats ===== */
+  #stats{padding:48px 0;background:var(--surface);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border)}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+  .stat .num{font-size:var(--fs-4);font-weight:800;color:var(--text);line-height:1}
+  .stat .lbl{font-size:var(--fs-1);color:var(--muted);margin-top:8px}
+
+  /* ===== Timeline ===== */
+  .timeline{position:relative;margin-top:8px;padding-left:26px}
+  .timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:.5px;background:var(--border-strong)}
+  .tl-item{position:relative;padding:0 0 28px 24px}
+  .tl-item::before{content:"";position:absolute;left:-23px;top:6px;width:11px;height:11px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--primary);transition:border-color var(--dur) ease-out}
+  .tl-item:hover::before{border-color:var(--accent)}
+  .tl-item .time{font-size:var(--fs-1);color:var(--primary-strong);font-weight:700}
+  .tl-item h3{font-size:var(--fs-3);margin:4px 0;font-weight:800}
+  .tl-item .org{color:var(--muted);font-size:var(--fs-2)}
+  .tl-item ul{margin-top:10px;margin-left:18px;color:var(--text-2)}
+  .tl-item ul li{margin:6px 0;font-size:var(--fs-2)}
+
+  /* ===== Repo cards ===== */
+  .repos{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:20px}
+  .repo-card{display:flex;flex-direction:column;background:#fff;border:.5px solid var(--border);
+    border-radius:var(--r-1);overflow:hidden}
+  .repo-shot{height:188px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-2);
+    font-weight:700;color:#fff;background:var(--primary-surface);position:relative;overflow:hidden}
+  .repo-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .repo-shot .ph{opacity:.92}
+  .repo-head{padding:18px 22px 12px;border-bottom:.5px solid var(--border)}
+  .repo-head .name{font-size:var(--fs-3);font-weight:800;color:var(--text);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .repo-head .name .gh{font-size:var(--fs-1);font-weight:700;color:var(--accent-strong);background:var(--accent-surface);padding:2px 9px;border-radius:var(--pill)}
+  .repo-head .desc{color:var(--muted);font-size:var(--fs-2);margin-top:6px}
+  .repo-body{padding:16px 22px 20px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .case-row{display:flex;gap:10px;font-size:var(--fs-2);align-items:flex-start}
+  .case-row .t{font-weight:600;color:var(--text-2)}
+  .case-row .t .lab{display:block;font-size:var(--fs-1);font-weight:700;letter-spacing:.02em;margin-bottom:2px}
+  .case-row .t .lab.pain{color:var(--red-9)}
+  .case-row .t .lab.act{color:var(--primary-strong)}
+  .case-row .t .lab.win{color:var(--green-9)}
+  .case-row .t .lab.me{color:var(--accent-strong)}
+  .case-row .t .lab.fix{color:var(--amber-9)}
+  .repo-tags{display:flex;flex-wrap:wrap;gap:6px}
+  .repo-tags span{background:var(--surface);border:.5px solid var(--border);padding:4px 10px;border-radius:var(--pill);font-size:var(--fs-1);color:var(--text-2);font-weight:600}
+  .repo-links{display:flex;gap:10px;margin-top:auto;flex-wrap:wrap}
+  .repo-links a{padding:9px 15px;border-radius:var(--pill);font-weight:700;font-size:var(--fs-1);transition:background var(--dur) ease-out}
+  .repo-links .src{background:var(--primary);color:#fff}
+  .repo-links .src:hover{background:var(--primary-strong)}
+  .repo-links .demo{background:var(--surface);color:var(--accent-strong);border:.5px solid var(--border)}
+  .repo-links .demo:hover{background:var(--accent-surface)}
+
+  /* ===== Education ===== */
+  .edu-grid{display:grid;grid-template-columns:repeat(2,minmax(300px,1fr));gap:18px;max-width:760px;margin:0 auto}
+  .edu-card{padding:20px;background:#fff;border:.5px solid var(--border);border-radius:var(--r-1)}
+  .edu-card .school{font-weight:800;font-size:var(--fs-3);color:var(--text)}
+  .edu-card .major{margin:6px 0;font-size:var(--fs-2);font-weight:600}
+  .edu-card .meta{color:var(--muted);font-size:var(--fs-1)}
+  .edu-card .exp{margin-top:12px;font-size:var(--fs-2);color:var(--text-2);border-top:.5px solid var(--border);padding-top:12px}
+
+  /* ===== Resume modal ===== */
+  .modal-mask{position:fixed;inset:0;background:rgba(28,37,48,.5);display:none;align-items:flex-start;justify-content:center;z-index:150;padding:40px 16px;overflow:auto}
+  .modal-mask.show{display:flex}
+  .modal{background:#fff;border:.5px solid var(--border);border-radius:var(--r-1);max-width:740px;width:100%;padding:32px 36px;position:relative}
+  .modal .close{position:absolute;top:14px;right:18px;border:none;background:var(--surface);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:var(--fs-3);color:var(--muted);transition:background var(--dur) ease-out}
+  .modal .close:hover{background:var(--accent-surface);color:var(--accent-strong)}
+  .modal h2{font-size:var(--fs-4);font-weight:800;color:var(--text)}
+  .modal .m-role{color:var(--primary-strong);font-weight:700;margin-bottom:18px;font-size:var(--fs-2)}
+  .resume-sec{margin-bottom:16px}
+  .resume-sec h4{color:var(--text);font-size:var(--fs-2);font-weight:800;margin-bottom:6px;letter-spacing:.02em}
+  .resume-sec p,.resume-sec li{font-size:var(--fs-2);color:var(--text-2)}
+  .resume-sec ul{margin-left:18px}
+  .resume-sec li{margin:5px 0}
+  .modal .download{display:inline-block;margin-top:6px;background:var(--primary);color:#fff;padding:10px 22px;border-radius:var(--pill);font-weight:700;font-size:var(--fs-2)}
+
+  footer{padding:40px 0;text-align:center;color:var(--muted);font-size:var(--fs-1);border-top:.5px solid var(--border);background:var(--bg)}
+
+  /* ===== Playground ===== */
+  .play-section{padding:72px 0;background:var(--surface);border-top:.5px solid var(--border)}
+  .play-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+  .ptab{border:.5px solid var(--border);background:#fff;color:var(--text-2);font-weight:700;font-size:var(--fs-2);
+    padding:8px 14px;border-radius:var(--pill);cursor:pointer;transition:background var(--dur) ease-out,color var(--dur) ease-out}
+  .ptab:hover{background:var(--surface-2)}
+  .ptab.active{background:var(--primary);color:#fff;border-color:transparent}
+  .play-stage{background:#fff;border:.5px solid var(--border);border-radius:var(--r-1);overflow:hidden}
+  .panel{display:none;padding:24px}
+  .panel.active{display:block}
+  .panel-grid{display:grid;grid-template-columns:280px 1fr;gap:22px}
+  .panel-intro{background:var(--surface);border-radius:var(--r-2);padding:16px;align-self:start}
+  .panel-intro h4{font-size:var(--fs-3);margin-bottom:10px;color:var(--text)}
+  .pi-row{font-size:var(--fs-2);color:var(--text-2);margin-bottom:8px;line-height:1.6}
+  .pi-row b{color:var(--text);font-weight:700}
+  .demo-card{background:#fff;border:.5px solid var(--border);border-radius:var(--r-2);padding:16px;min-height:320px}
+  .demo-head{font-weight:700;font-size:var(--fs-3);margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--text)}
+  .tabs2{display:flex;gap:6px;margin-bottom:12px}
+  .t2{border:none;background:var(--surface);color:var(--text-2);font-weight:700;padding:6px 13px;border-radius:var(--pill);cursor:pointer;font-size:var(--fs-1);font-family:inherit}
+  .t2.active{background:var(--primary);color:#fff}
+  .req-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .req{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:var(--r-3);padding:10px 13px}
+  .req .ri{font-weight:600;font-size:var(--fs-2)}.req .rm{font-size:var(--fs-1);color:var(--muted)}
+  .req.done{opacity:.85}.req.rej{opacity:.55;text-decoration:line-through}
+  .ra{display:flex;gap:6px}
+  .mini{border:none;cursor:pointer;font-size:var(--fs-1);font-weight:700;padding:5px 10px;border-radius:var(--r-3);color:#fff;font-family:inherit}
+  .mini.ok{background:var(--green-9)}.mini.no{background:var(--red-9)}
+  .kgin{display:flex;gap:8px;margin-bottom:10px}
+  .kgin input{flex:1;border:.5px solid var(--border);border-radius:var(--r-2);padding:9px 12px;font-size:var(--fs-2);outline:none;background:#fff;font-family:inherit;color:var(--text);transition:border-color var(--dur) ease-out}
+  .kgin input:focus{border-color:var(--primary)}
+  .kchips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .kchip{background:var(--accent-surface);color:var(--accent-strong);border:none;border-radius:var(--pill);padding:5px 11px;font-size:var(--fs-1);font-weight:700;cursor:pointer;font-family:inherit}
+  .kg-ans{border:.5px solid var(--border);background:var(--surface);border-radius:var(--r-2);padding:13px 15px;font-size:var(--fs-2);line-height:1.7;min-height:80px;color:var(--text-2)}
+  .kg-ans .cite{color:var(--accent-strong);font-weight:800;font-size:var(--fs-1)}
+  .kg-src{margin-top:10px;font-size:var(--fs-1);color:var(--muted)}
+  .kg-src span{display:inline-block;background:#fff;border:.5px solid var(--border);border-radius:var(--r-3);padding:4px 9px;margin:3px 4px 0 0}
+  .amz-in{display:flex;gap:8px;margin-bottom:10px}
+  .amz-in input{flex:1;border:.5px solid var(--border);border-radius:var(--r-2);padding:9px 12px;font-size:var(--fs-2);outline:none;background:#fff;font-family:inherit;color:var(--text);transition:border-color var(--dur) ease-out}
+  .amz-in input:focus{border-color:var(--primary)}
+  .btn-run{border:none;background:var(--accent);color:#fff;font-weight:700;padding:9px 16px;border-radius:var(--pill);cursor:pointer;font-size:var(--fs-2);font-family:inherit}
+  .btn-run:hover{background:var(--accent-strong)}
+  .amz-log{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:var(--fs-1);background:var(--slate-12);color:var(--slate-4);border-radius:var(--r-2);padding:13px;height:160px;overflow:auto}
+  .amz-log .ok{color:var(--green-6)}.amz-log .hl{color:var(--blue-6)}
+  .amz-report{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .amz-box{background:var(--surface);border-radius:var(--r-2);padding:11px}.amz-box .t{font-size:var(--fs-1);color:var(--muted)}.amz-box .v{font-size:var(--fs-3);font-weight:800;color:var(--text);margin-top:2px}
+  .gk-q{font-size:var(--fs-2);font-weight:700;margin-bottom:12px;line-height:1.6}
+  .gk-opt{display:block;width:100%;text-align:left;border:.5px solid var(--border);background:#fff;border-radius:var(--r-2);padding:10px 14px;margin-bottom:8px;font-size:var(--fs-2);cursor:pointer;font-family:inherit;transition:border-color var(--dur) ease-out}
+  .gk-opt:hover{border-color:var(--primary)}
+  .gk-opt.correct{background:var(--violet-3);border-color:var(--violet-6)}
+  .gk-opt.wrong{background:var(--slate-3);border-color:var(--slate-7)}
+  .gk-panel{display:none;margin-top:14px;background:var(--accent-surface);border-radius:var(--r-2);padding:14px}
+  .gk-panel.show{display:block}
+  .gk-panel .ttl{font-weight:800;color:var(--accent-strong);margin-bottom:8px}
+  .gk-strip{display:flex;gap:8px;margin-top:10px}
+  .gk-frame{flex:1;background:#fff;border-radius:var(--r-3);padding:10px;text-align:center;font-size:var(--fs-1);line-height:1.5;color:var(--text-2)}
+  .gk-frame .n{font-weight:800;color:var(--accent-strong);font-size:var(--fs-2);display:block}
+  .style-slot{margin-bottom:10px}.style-slot label{display:block;font-size:var(--fs-1);color:var(--muted);margin-bottom:4px}
+  .style-slot select{width:100%;border:.5px solid var(--border);border-radius:var(--r-2);padding:8px 10px;font-size:var(--fs-2);background:#fff;color:var(--text);font-family:inherit}
+  .prompt-out{margin-top:12px;background:var(--slate-12);color:var(--slate-4);border-radius:var(--r-2);padding:13px;font-size:var(--fs-2);line-height:1.7;min-height:88px;white-space:pre-wrap}
+  .copy-btn{margin-top:10px;border:none;background:var(--accent);color:#fff;font-weight:700;padding:8px 15px;border-radius:var(--pill);cursor:pointer;font-size:var(--fs-2);font-family:inherit}
+  .pet-win{position:relative;height:190px;border-radius:var(--r-2);background:var(--slate-12);overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .pet{font-size:60px}
+  .pet-status{margin-top:12px;text-align:center;font-size:var(--fs-2);color:var(--muted)}
+  .pet-btns{display:flex;gap:8px;margin-top:10px;justify-content:center;flex-wrap:wrap}
+  .pet-btns button{border:.5px solid var(--border);background:#fff;border-radius:var(--pill);padding:6px 13px;font-size:var(--fs-2);font-weight:700;cursor:pointer;color:var(--text-2);font-family:inherit}
+  .pet-btns button:hover{background:var(--surface-2)}
+  .duel-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .duel-row .who{font-size:var(--fs-1);font-weight:800;width:40px;color:var(--text)}
+  .duel-bar{flex:1;height:16px;background:var(--surface-2);border-radius:var(--pill);overflow:hidden}
+  .duel-bar>i{display:block;height:100%;background:var(--primary);transition:width 250ms ease-out}
+  .duel-bar.foe>i{background:var(--red-9)}
+  .duel-log{height:110px;overflow:auto;background:var(--surface);border-radius:var(--r-2);padding:10px;font-size:var(--fs-2);line-height:1.6;margin:10px 0;color:var(--text-2)}
+  .vid-in{display:flex;gap:8px;margin-bottom:12px}
+  .vid-in input{flex:1;border:.5px solid var(--border);border-radius:var(--r-2);padding:9px 12px;font-size:var(--fs-2);outline:none;background:#fff;font-family:inherit;color:var(--text);transition:border-color var(--dur) ease-out}
+  .vid-in input:focus{border-color:var(--primary)}
+  .note-tl{list-style:none}
+  .note{display:flex;gap:10px;padding:10px 0;border-bottom:.5px solid var(--border)}
+  .note .ts{font-family:ui-monospace,monospace;color:var(--accent-strong);font-weight:800;font-size:var(--fs-1);flex:0 0 auto;padding-top:1px}
+  .note .nt{font-size:var(--fs-2);color:var(--text-2)}.note .ns{font-size:var(--fs-1);color:var(--muted);font-style:italic;margin-top:2px;display:block}
+
+  /* ===== Interview ===== */
+  .iv-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:40px;align-items:start}
+  .iv-left .kicker{display:inline-block;font-size:var(--fs-1);letter-spacing:.16em;font-weight:700;color:var(--primary-strong);background:var(--primary-surface);padding:5px 12px;border-radius:var(--pill);margin-bottom:16px}
+  .iv-title{font-size:var(--fs-4);line-height:1.1;font-weight:800;color:var(--text);letter-spacing:-.01em;margin:4px 0 14px}
+  .iv-title em{font-style:normal;color:var(--accent)}
+  .iv-sub{font-size:var(--fs-2);color:var(--text-2);line-height:1.65;max-width:46ch;margin-bottom:16px}
+  .iv-hint{display:inline-flex;align-items:center;gap:7px;font-size:var(--fs-1);color:var(--muted);margin-bottom:18px}
+  .iv-hint .dotp{width:7px;height:7px;border-radius:50%;background:var(--green-9)}
+  .iv-chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:8px 13px;font-size:var(--fs-2);font-weight:600;color:var(--text-2);background:var(--surface);border:.5px solid var(--border);border-radius:var(--pill);cursor:pointer;font-family:inherit;transition:background var(--dur) ease-out,color var(--dur) ease-out}
+  .chip:hover{background:var(--surface-2);color:var(--text)}
+  .chip.active{background:var(--accent);color:#fff;border-color:transparent}
+  .chat-card{position:relative;background:#fff;border:.5px solid var(--border);border-radius:var(--r-1);overflow:hidden;display:flex;flex-direction:column;height:560px}
+  .chat-head{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:.5px solid var(--border);background:var(--bg)}
+  .chat-avatar{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:var(--fs-2);flex-shrink:0}
+  .chat-name{font-weight:700;font-size:var(--fs-2);color:var(--text)}
+  .chat-status{font-size:var(--fs-1);color:var(--muted);margin-top:1px;display:flex;align-items:center;gap:6px}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green-9)}
+  .chat-actions{margin-left:auto;display:flex;gap:6px}
+  .chat-btn{padding:6px 12px;font-size:var(--fs-1);font-weight:700;color:var(--muted);background:transparent;border:.5px solid var(--border);border-radius:var(--pill);cursor:pointer;font-family:inherit;transition:color var(--dur) ease-out,border-color var(--dur) ease-out}
+  .chat-btn:hover{color:var(--primary-strong);border-color:var(--primary)}
+  .chat-body{flex:1;min-height:0;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;background:var(--surface);align-items:flex-start}
+  .chat-body::-webkit-scrollbar{width:6px}
+  .chat-body::-webkit-scrollbar-thumb{background:var(--slate-7);border-radius:3px}
+  .msg{display:flex;gap:10px;align-items:flex-start;width:100%;max-width:100%;min-width:0}
+  .msg-user{flex-direction:row-reverse;margin-left:auto}
+  .msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--fs-1);font-weight:800;color:#fff;flex-shrink:0}
+  .msg-ai .msg-av{background:var(--primary)}
+  .msg-user .msg-av{background:var(--slate-9)}
+  .bubble{max-width:78%;min-width:0;padding:10px 14px;font-size:var(--fs-2);line-height:1.6;color:var(--text);background:#fff;border:.5px solid var(--border);border-radius:var(--r-2)}
+  .msg-user .bubble{background:var(--primary);color:#fff;border-color:transparent}
+  .msg-tag{margin-top:6px;font-size:var(--fs-1);color:var(--muted);padding-left:4px}
+  .msg-user .msg-tag{text-align:right;padding-right:4px;padding-left:0}
+  .chat-typing{display:inline-flex;gap:4px;padding:4px 0}
+  .chat-typing span{width:6px;height:6px;border-radius:50%;background:var(--slate-8)}
+  .typing-label{font-size:var(--fs-1);color:var(--muted);margin-top:5px;padding-left:4px}
+  .chat-input{display:flex;gap:8px;padding:13px;border-top:.5px solid var(--border);background:#fff}
+  .chat-input input{flex:1;padding:9px 14px;border:.5px solid var(--border);border-radius:var(--pill);font-size:var(--fs-2);font-family:inherit;color:var(--text);background:#fff;outline:none;transition:border-color var(--dur) ease-out}
+  .chat-input input:focus{border-color:var(--primary)}
+  .send-btn{padding:9px 18px;background:var(--primary);color:#fff;border:none;border-radius:var(--pill);font-size:var(--fs-2);font-weight:700;cursor:pointer;font-family:inherit;transition:background var(--dur) ease-out}
+  .send-btn:hover{background:var(--primary-strong)}
+
+  /* ===== Reveal (minimal, ease-out) ===== */
+  .reveal{opacity:0;transition:opacity var(--dur) ease-out}
+  .reveal.in{opacity:1}
+
+  @media(max-width:860px){
+    .hero .wrap{grid-template-columns:1fr}
+    .hero-right{height:280px;order:-1}
+    .nav-links{display:none}
+    .menu-btn{display:flex}
+    .stats-grid{grid-template-columns:repeat(2,1fr);gap:20px 12px}
+    .repos{grid-template-columns:1fr}
+    .edu-grid{grid-template-columns:1fr;max-width:100%}
+    .iv-grid{grid-template-columns:1fr;gap:28px}
+    .panel-grid{grid-template-columns:1fr}
+    .amz-report{grid-template-columns:1fr}
+    section{padding:56px 0}
+    .wrap{padding:0 18px}
+    .modal{padding:26px 20px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1!important;transform:none!important}
+  }
+</style>
+<link rel="stylesheet" href="portfolio.css" />
+<script src="portfolio.js" defer></script>
+<script src="desktop.js" defer></script>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'6d8aa37ae1cc444dafc858ca7f322440'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+
+<a class="skip-link" href="#mainContent">跳到主要内容</a>
+
+<svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+  <symbol id="icon-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></symbol>
+  <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 3l-4 18"/></symbol>
+  <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M3 7V5h7l2 3h9v12H3z"/><path d="M3 11h18"/></symbol>
+  <symbol id="icon-note" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 8h16M8 12h8m-8 4h6"/></symbol>
+  <symbol id="icon-chat" viewBox="0 0 24 24"><path d="M21 11a9 8 0 0 1-9 8H8l-5 3 1-6a8 8 0 0 1-1-5 9 8 0 0 1 18 0Z"/><path d="M7 10h10m-10 4h6"/></symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24"><path d="m2 11 10-9 10 9M5 9v12h14V9M9 21v-7h6v7"/></symbol>
+  <symbol id="icon-github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m15 5v-4c0-1-.5-2-1-2 4 0 5-2 5-6 0-2-1-3-2-4 0-1 0-3-1-4-2 0-3 1-4 2a13 13 0 0 0-6 0C8 3 7 2 5 2 4 3 4 5 4 6c-1 1-2 2-2 4 0 4 2 6 6 6-.7 1-1 2-1 3v3"/></symbol>
+  <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+</defs></svg>
+
+<nav class="site-nav" aria-label="主导航">
+  <a class="desktop-brand" href="#home"><img src="assets/avatar.jpg" alt="" width="24" height="24"/><strong>李焕鹏</strong></a>
+  <div class="nav-links"><a href="#home">首页</a><a href="#intern">关于</a><a href="#repos">项目</a><a href="#playground">实验室</a><a href="#interview">对话</a></div>
+  <div class="nav-actions">
+    <button class="icon-button" id="motionToggle" type="button" aria-pressed="true" aria-label="关闭动态效果" title="切换动态效果"><svg><use href="#icon-pause"/></svg></button>
+    <a class="icon-button" href="mailto:huanpeng69@gmail.com" aria-label="发送邮件" title="发送邮件"><svg><use href="#icon-mail"/></svg></a>
+    <a class="icon-button" href="https://github.com/huanpeng69-cmyk" target="_blank" rel="noopener noreferrer" aria-label="GitHub（新窗口）" title="GitHub"><svg><use href="#icon-github"/></svg></a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu" aria-label="移动端导航">
+  <a href="#home" onclick="toggleMenu()">首页 <span>Welcome</span></a>
+  <a href="#intern" onclick="toggleMenu()">关于我 <span>About</span></a>
+  <a href="#repos" onclick="toggleMenu()">开源项目 <span>Projects</span></a>
+  <a href="#playground" onclick="toggleMenu()">交互实验室 <span>Playground</span></a>
+  <a href="#contact" onclick="toggleMenu()">联系我 <span>Contact</span></a>
+</div>
+
+<main id="mainContent" tabindex="-1">
+<header class="desktop-hero" id="home">
+  <div class="desktop-stage">
+    <div class="name-cluster">
+      <p class="handwritten hello">Hi, I am</p>
+      <div class="name-selection"><i class="handle h-tl" aria-hidden="true"></i><i class="handle h-tr" aria-hidden="true"></i><h1>Huanpeng Li</h1><i class="handle h-bl" aria-hidden="true"></i><i class="handle h-br" aria-hidden="true"></i></div>
+      <a class="role-sticker sticker-ai" href="#intern"><span class="sticker-icon">✳</span>AI 应用实践</a>
+      <a class="role-sticker sticker-build" href="#repos"><span class="sticker-icon"><svg><use href="#icon-code"/></svg></span>Independent Builder</a>
+    </div>
+    <a class="desktop-object hero-polaroid" href="#intern" aria-label="认识李焕鹏"><img src="assets/avatar.jpg" alt="李焕鹏的个人照片" width="220" height="240" fetchpriority="high"/><span class="handwritten">it's me :)</span></a>
+    <a class="desktop-object hero-window" href="#repos" aria-label="查看综合管理工作台项目"><span class="mini-titlebar"><i></i><i></i><i></i><span>我的工作台</span></span><img src="assets/comprehensive-workbench.jpg" alt="综合管理工作台实际截图" width="260" height="180"/><span class="window-caption">真实问题 → 可用的产品</span></a>
+    <a class="desktop-object hero-computer" href="#playground" aria-label="打开交互实验室"><img src="assets/desktop-computer.svg" alt="复古电脑插画，屏幕显示 AI、工作流和开源项目" width="280" height="270"/><span class="object-caption handwritten">let's build something!</span></a>
+    <a class="desktop-object hero-note" href="#interview"><small>NOTE TO SELF</small><span>让 AI 走出对话框，<br>进入真实世界。</span><span class="note-arrow" aria-hidden="true">↗</span></a>
+    <a class="desktop-object hero-project" href="#repos" aria-label="查看角落搭子项目"><img src="assets/corner.png" alt="角落搭子项目截图，非个人宠物照片" width="230" height="180"/><span class="handwritten">a little side project</span></a>
+    <svg class="desktop-flower" aria-hidden="true" viewBox="0 0 120 120"><g fill="#ffd54a" stroke="#e6b12c" stroke-width="1.5"><ellipse cx="60" cy="27" rx="14" ry="25"/><ellipse cx="60" cy="93" rx="14" ry="25"/><ellipse cx="27" cy="60" rx="25" ry="14"/><ellipse cx="93" cy="60" rx="25" ry="14"/><ellipse cx="37" cy="37" rx="13" ry="24" transform="rotate(-45 37 37)"/><ellipse cx="83" cy="83" rx="13" ry="24" transform="rotate(-45 83 83)"/><ellipse cx="83" cy="37" rx="13" ry="24" transform="rotate(45 83 37)"/><ellipse cx="37" cy="83" rx="13" ry="24" transform="rotate(45 37 83)"/></g><circle cx="60" cy="60" r="20" fill="#ad71ff"/><circle cx="54" cy="56" r="2"/><circle cx="66" cy="56" r="2"/><path d="M53 64q7 9 14 0" stroke="#171717" stroke-width="2" fill="none"/></svg>
+    <nav class="desktop-dock" aria-label="桌面快捷入口">
+      <a class="dock-item dock-home" href="#home" aria-label="首页"><svg><use href="#icon-home"/></svg><span>首页</span></a>
+      <a class="dock-item dock-about" href="#intern" aria-label="关于我"><img src="assets/avatar.jpg" alt=""/><span>关于我</span></a>
+      <a class="dock-item dock-projects" href="#repos" aria-label="开源项目"><svg><use href="#icon-folder"/></svg><span>开源项目</span></a>
+      <a class="dock-item dock-terminal" href="#playground" aria-label="交互实验室"><svg><use href="#icon-code"/></svg><span>实验室</span></a>
+      <a class="dock-item dock-chat" href="#interview" aria-label="资料问答"><svg><use href="#icon-chat"/></svg><span>资料问答</span></a>
+      <button class="dock-item dock-resume" type="button" onclick="openResume()" aria-label="查看简历"><svg><use href="#icon-note"/></svg><span>我的简历</span></button>
+      <a class="dock-item dock-mail" href="mailto:huanpeng69@gmail.com" aria-label="发送邮件"><svg><use href="#icon-mail"/></svg><span>发送邮件</span></a>
+      <a class="dock-item dock-github" href="https://github.com/huanpeng69-cmyk" target="_blank" rel="noopener noreferrer" aria-label="GitHub（新窗口）"><svg><use href="#icon-github"/></svg><span>GitHub</span></a>
+    </nav>
+    <a class="desktop-scroll" href="#intern">向下认识我 <span aria-hidden="true">↓</span></a>
+  </div>
+</header>
+
+<!-- ===== STATS ===== -->
+<section id="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-index">01 / BUILD</div><div class="num" data-to="8" data-suffix="">8</div><div class="lbl">个 AI 开源项目</div></div>
+      <div class="stat"><div class="stat-index">02 / LEAD</div><div class="num" data-to="200" data-suffix="+">200+</div><div class="lbl">人团队管理规模</div></div>
+      <div class="stat"><div class="stat-index">03 / IMPROVE</div><div class="num" data-to="15" data-suffix="%">15%</div><div class="lbl">流程降本</div></div>
+      <div class="stat"><div class="stat-index">04 / SHARE</div><div class="num" data-to="60" data-suffix="">60</div><div class="lbl">篇宣传稿产出</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OPEN SOURCE ===== -->
+<section id="repos">
+  <div class="wrap">
+    <div class="section-label"><span>SELECTED WORK</span><span>8 个现有开源项目</span></div>
+    <div class="sec-head work-heading"><h2 class="selection-heading handwritten">My Projects</h2><p>从真实工作流，到日常生活的灵感。<br>发布日期与 Star 数据未提供，暂不展示。</p></div>
+    <div class="work-toolbar"><div class="project-filters" role="group" aria-label="项目分类"><button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">全部作品 <sup>08</sup></button><button class="filter-btn" type="button" data-filter="product" aria-pressed="false">AI 与效率 <sup>05</sup></button><button class="filter-btn" type="button" data-filter="creative" aria-pressed="false">创意实验 <sup>03</sup></button></div><span class="work-count" id="workCount" aria-live="polite">SHOWING 08 PROJECTS</span></div>
+    <div class="repos">
+
+      <div class="repo-card" data-cat="product">
+        <div class="repo-shot">
+          <img src="assets/comprehensive-workbench.jpg" alt="综合管理工作台截图" onerror="this.remove()" />
+        </div>
+        <div class="repo-head">
+          <div class="name">综合管理工作台 <span class="gh">comprehensive-workbench</span></div>
+          <div class="desc">Enterprise AI Workspace：人事、办公、党建三大管理模块 + 待办中心 + AI 助手，综合事务一站式处理</div>
+        </div>
+        <div class="repo-body">
+          <div class="case-row"><div class="t"><span class="lab pain">痛点</span>综合管理事务碎、跨条线：请假审批、花名册、公章登记、公务接待、党费缴纳分散处理，重复劳动多</div></div>
+          <div class="case-row"><div class="t"><span class="lab act">做法</span>Vue 自建工作台：工作台首页 + 待办中心统一收口；人事管理（人员花名册、员工制作）、办公管理（通知公告、公章使用登记、公务接待）、党建管理（党员名册、党费季度缴纳）三大模块；内置请假等审批流（待审、已批、驳回全状态流转）；AI 助手接入大模型做智能起草与问答</div></div>
+          <div class="case-row"><div class="t"><span class="lab win">结果</span>高频事务一站式办理、审批线上留痕；既是开发者也是第一用户，每天拿真实综合管理工作当测试集，已开源</div></div>
+          <div class="case-row"><div class="t"><span class="lab me">我的角色</span>独立完成需求调研、原型与数据表设计、Vue 前后端开发、审批流实现与部署上线；本人即第一用户，拿日常工作当验收测试</div></div>
+          <div class="case-row"><div class="t"><span class="lab fix">踩坑与解决</span>早期审批状态散在各页面、经常不同步，把状态收口成统一流转（待审、已批、驳回），列表全部从同一接口取数，前端只做展示，不同步问题彻底消除</div></div>
+          <div class="repo-tags"><span>Vue</span><span>审批流</span><span>人事 / 办公 / 党建</span><span>AI 助手</span><span>待办中心</span></div>
+          <div class="repo-links">
+            <a class="src" href="https://github.com/huanpeng69-cmyk/comprehensive-workbench" target="_blank" rel="noopener">GitHub 源码</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card" data-cat="product">
+        <div class="repo-shot">
+          <img src="assets/amazon.png" alt="Amazon AI Growth OS 截图" onerror="this.remove()" />
+          <span class="ph">Amazon AI Growth OS，项目截图</span>
+        </div>
+        <div class="repo-head">
+          <div class="name">Amazon AI Growth OS <span class="gh">amazon-ai-growth-os</span></div>
+          <div class="desc">面向亚马逊卖家的 AI 增长操作系统，Multi-Agent 串联选品到增长的全链路</div>
+        </div>
+        <div class="repo-body">
+          <div class="case-row"><div class="t"><span class="lab pain">痛点</span>卖家从选品、竞品、评论到 Listing、广告全流程割裂，缺一体化智能工具</div></div>
+          <div class="case-row"><div class="t"><span class="lab act">做法</span>Supervisor 调度 9 个专家 Agent 串起六阶段顺序流水线（选品、竞品、VOC、Listing、广告、增长看板），状态逐级传递；FastAPI 后端 + 零构建前端 + 模块化 MCP 工具层（Bright Data、Sorftime、Sif 可插拔替换）；Listing 生成与视觉工厂解耦，蓝海选品自动过滤书籍影视类目</div></div>
+          <div class="case-row"><div class="t"><span class="lab win">结果</span>一句话自然语言即调度 56 个亚马逊领域专业技能，覆盖选品、关键词、Listing、FBA/广告、自动上架，基于 Claude Agent SDK 的对话式全链路助手</div></div>
+          <div class="case-row"><div class="t"><span class="lab me">我的角色</span>独立设计 Supervisor + 9 Agent 架构与阶段间状态传递协议，开发 FastAPI 后端与零构建前端，规划并接入 MCP 工具链（Bright Data、Sorftime、Sif）</div></div>
+          <div class="case-row"><div class="t"><span class="lab fix">踩坑与解决</span>多 Agent 早期各说各话：上游输出格式不固定，下游解析频繁失败，定了阶段间统一 schema 契约，每个 Agent 只对自己阶段的产出负责；抓取源不稳定，做成可插拔 MCP 工具层，哪个源稳用哪个</div></div>
+          <div class="repo-tags"><span>FastAPI</span><span>Multi-Agent</span><span>Agnes AI</span><span>MCP Tool</span><span>零构建前端</span></div>
+          <div class="repo-links">
+            <a class="src" href="https://github.com/huanpeng69-cmyk/amazon-ai-growth-os" target="_blank" rel="noopener">GitHub 源码</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card" data-cat="product">
+        <div class="repo-shot">
+          <img src="assets/knowledge-graph.png" alt="知识图谱可视化截图" onerror="this.remove()" />
+        </div>
+        <div class="repo-head">
+          <div class="name">企业知识库 <span class="gh">enterprise-knowledge-graph-rag</span></div>
+          <div class="desc">企业知识库 + 知识图谱 RAG：向量与图谱双路混合召回，答案可溯源</div>
+        </div>
+        <div class="repo-body">
+          <div class="case-row"><div class="t"><span class="lab pain">痛点</span>企业文档散落各处，纯向量检索答不准关系型问题，答案也无法溯源到原文依据</div></div>
+          <div class="case-row"><div class="t"><span class="lab act">做法</span>FastAPI + Chroma + SQLite 三层：上传 PDF、Markdown、TXT 自动解析、分块并建立语义索引（DashScope embedding）；大模型按 JSON 契约抽实体、关系存入图谱，每条关系保留原始 chunk、来源文件与页码证据；客服同时召回向量片段与图谱关系，冲突时以原文为准；原生 SVG 画 1–3 跳关系路径，附图谱诊断接口</div></div>
+          <div class="case-row"><div class="t"><span class="lab win">结果</span>答案带引用编号、来源位置与检索模式；管理员、编辑、查看者三级 RBAC + 会话认证 + 审计日志，AI 服务不可用时检索不受影响，已开源</div></div>
+          <div class="case-row"><div class="t"><span class="lab me">我的角色</span>独立设计三层架构（FastAPI 边界、Chroma 检索、SQLite 图谱存储），编写图谱抽取的 JSON 契约与提示词，实现 RBAC、审计日志与原生 SVG 可视化</div></div>
+          <div class="case-row"><div class="t"><span class="lab fix">踩坑与解决</span>大模型抽实体关系时输出不稳定、字段时缺时错，定严格 JSON 契约 + 校验重试，不合格直接丢弃；图谱与原文偶尔冲突，立了以原文为准的仲裁规则，答案永远可回溯</div></div>
+          <div class="repo-tags"><span>FastAPI</span><span>Chroma</span><span>SQLite</span><span>Agnes AI</span><span>DashScope</span><span>SVG 可视化</span></div>
+          <div class="repo-links">
+            <a class="src" href="https://github.com/huanpeng69-cmyk/enterprise-knowledge-graph-rag" target="_blank" rel="noopener">GitHub 源码</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card" data-cat="creative">
+        <div class="repo-shot">
+          <img src="assets/destiny-duel.png" alt="命运对决卡牌图鉴" onerror="this.remove()" />
+        </div>
+        <div class="repo-head">
+          <div class="name">命运对决 <span class="gh">destiny-duel</span></div>
+          <div class="desc">新手友好的类游戏王卡牌对战：boardgame.io + React 人机对战，14,586 张中文卡牌图鉴（97.6% 官方译名覆盖）</div>
+        </div>
+        <div class="repo-body">
+          <div class="case-row"><div class="t"><span class="lab pain">痛点</span>现有对战工具偏硬核：英文界面、规则复杂、新手劝退，也没有能离线练手的中文人机环境</div></div>
+          <div class="case-row"><div class="t"><span class="lab act">做法</span>boardgame.io 实现完整规则（祭品召唤、战斗判定、死者苏生、护封剑）+ 脚本 AI 人机对战 + React 深色决斗场 UI + Web Audio 合成音效（零素材）；对接 YGOPRODeck 与百鸽 ygocdb 双数据源搭起 14,586 张中文图鉴，按需加载不拖慢首屏；44 个测试（22 条规则单测 + 中文卡库测试 + 5 局全自动对局）</div></div>
+          <div class="case-row"><div class="t"><span class="lab win">结果</span>Windows 双击 start-game.bat 即玩，测试全绿；版权合规：不附带任何官方插画，卡面 CSS 绘制 + 自定义卡面目录，效果文本为新手口语化重写</div></div>
+          <div class="case-row"><div class="t"><span class="lab me">我的角色</span>独立完成全部设计与开发：规则引擎、脚本 AI、棋盘 UI、音效、测试与中文化数据管线，一人一项目从 0 到可玩</div></div>
+          <div class="case-row"><div class="t"><span class="lab fix">踩坑与解决</span>boardgame.io 的 phase 结峰会强制结束当前回合，和「一回合内含主要、战斗两个子步骤」直接冲突，改用单一隐式阶段 + G.step 跟踪子步骤，在 moves 内做守卫；另外发现表示形式选择只改状态栏文字时，新手看得见提示却点不了按钮，用 pendingSummon 存临时状态并同步渲染可点按钮</div></div>
+          <div class="repo-tags"><span>boardgame.io</span><span>React</span><span>Node</span><span>Web Audio</span><span>44 tests</span><span>中文卡库</span></div>
+          <div class="repo-links">
+            <a class="src" href="https://github.com/huanpeng69-cmyk/destiny-duel" target="_blank" rel="noopener">GitHub 源码</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card" data-cat="product">
+        <div class="repo-shot">
+          <img src="assets/gongkao.png" alt="公考私教截图" onerror="this.remove()" />
+          <span class="ph">公考私教，项目截图</span>
+        </div>
+        <div class="repo-head">
+          <div class="name">公考私教 <span class="gh">gongkao-ai</span></div>
+          <div class="desc">公考刷题、模考、错题复习 + AI 讲解一体化学习应用，Web 与 Android 双端</div>
+        </div>
+        <div class="repo-body">
+          <div class="case-row"><div class="t"><span class="lab pain">痛点</span>备考资料散、错题没人讲，市面 App 贵而且不会针对你的错题个性化讲解</div></div>
+          <div class="case-row"><div class="t"><span class="lab act">做法</span>Next.js + Capacitor 打包双端，Agnes AI 做错题 AI 讲解，按题型、难度组织题库、模考与百宝箱；AI 文字 + 漫画分镜把「自己看答案」变成「私教带练」</div></div>
+          <div class="case-row"><div class="t"><span class="lab win">结果</span>支持 Android 真机使用，个人备考实测刷题复盘效率明显提升，已开源</div></div>
+          <div class="case-row"><div class="t"><span class="lab me">我的角色</span>独立完成产品定义、UI 与前后端开发；错题讲解提示词按题型分别打磨，并攒了 30 道真实错题做回归测试集，改一版跑一遍</div></div>
+          <div class="case-row"><div class="t"><span class="lab fix">踩坑与解决</span>模型早期经常直接甩答案、不引导思路，在 system prompt 写死「先追问思路再讲解」+ 塞 2 个正确对话示例（few-shot），用回归集把「直接报答案」的比例大幅压下来</div></div>
+          <div class="repo-tags"><span>Next.js</span><span>React</span><span>TypeScript</span><span>Capacitor</span><span>Agnes AI</span></div>
+          <div class="repo-links">
+            <a class="src" href="https://github.com/huanpeng69-cmyk/gongkao-ai" target="_blank" rel="noopener">GitHub 源码</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card" data-cat="creative">
+        <div class="repo-shot">
+          <img src="assets/style.png" alt="颜搭AI截图" style="object-position:top" onerror="this.remove()" />
+          <span class="ph">颜搭AI，项目截图</span>
+        </div>
+        <div class="repo-head">
+          <div class="name">颜搭AI <span class="gh">style-prompt-ui</span></div>
+          <div class="desc">面向发型、穿搭、国风形象、电子衣橱的 AI 提示词与方案板工具</div>
+        </div>
+        <div class="repo-body">
+          <div class="case-row"><div class="t"><span class="lab pain">痛点</span>想用 AI 生成穿搭、形象图，却不会写提示词；搭配方案零散，难以沉淀复用</div></div>
+          <div class="case-row"><div class="t"><span class="lab act">做法</span>HTML/JS + Node + Wisart API：把模糊需求拆成场景、预算、风格等结构化维度，按发型、穿搭、国风形象分场景产出可复制提示词；方案板沉淀搭配逻辑，电子衣橱管理已有单品，附天气建议与购物搜索</div></div>
+          <div class="case-row"><div class="t"><span class="lab win">结果</span>GitHub Pages 在线可用、移动端适配；提示词复制进生图工具即可出图，方案可反复调用</div></div>
+          <div class="case-row"><div class="t"><span class="lab me">我的角色</span>独立完成需求抽象、结构化提示词模板体系设计、前端页面与 Node 脚本开发，并部署维护 GitHub Pages</div></div>
+          <div class="case-row"><div class="t"><span class="lab fix">踩坑与解决</span>用户输入太模糊（「帮我搭一身约会穿的」）导致生成结果不稳定，做了需求结构化中间件，把场景、预算、风格拆成固定维度再填模板，输出确定性明显提升</div></div>
+          <div class="repo-tags"><span>HTML / JS</span><span>Node</span><span>Wisart API</span><span>多端</span></div>
+          <div class="repo-links">
+            <a class="src" href="https://github.com/huanpeng69-cmyk/style-prompt-ui" target="_blank" rel="noopener">GitHub 源码</a>
+            <a class="demo" href="https://huanpeng69-cmyk.github.io/style-prompt-ui/" target="_blank" rel="noopener">在线预览</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card" data-cat="creative">
+        <div class="repo-shot">
+          <img src="assets/corner.png" alt="角落搭子截图" onerror="this.remove()" />
+          <span class="ph">角落搭子，项目截图</span>
+        </div>
+        <div class="repo-head">
+          <div class="name">角落搭子 <span class="gh">corner-buddy</span></div>
+          <div class="desc">透明置顶 Windows 桌面宠物，上传宠物照生成 15 段真实动作视频</div>
+        </div>
+        <div class="repo-body">
+          <div class="case-row"><div class="t"><span class="lab pain">痛点</span>桌面宠物多是 PNG 闪烁、CSS 位移假动画，缺真实动作，且隐私存疑</div></div>
+          <div class="case-row"><div class="t"><span class="lab act">做法</span>Electron 透明窗口置顶渲染；Agnes 图生视频生成 15 段真实动作，FFmpeg 绿幕抠像编码 VP9 透明 WebM 保证边缘干净；API Key 存 Windows 安全存储，照片仅本地处理、日常离线运行</div></div>
+          <div class="case-row"><div class="t"><span class="lab win">结果</span>15 个真实逐帧动作（待机、被摸、跳舞、睡觉等），安静待在桌面角落不挡操作；已发 1.0.0 安装包，双击即用</div></div>
+          <div class="case-row"><div class="t"><span class="lab me">我的角色</span>独立完成 Electron 壳、视频生成管线（Agnes 图生视频 + FFmpeg 抠像编码）与打包分发，撰写安装包和使用说明</div></div>
+          <div class="case-row"><div class="t"><span class="lab fix">踩坑与解决</span>绿幕抠像最初边缘发黑、透明通道丢失，换 VP9 + Alpha 编码（yuva420p）并放宽绿幕色度容差，边缘干净了；视频体积过大，限制分辨率与帧率，压到可下载的体积</div></div>
+          <div class="repo-tags"><span>Electron</span><span>FFmpeg</span><span>Agnes 视频</span><span>VP9 WebM</span><span>Windows</span></div>
+          <div class="repo-links">
+            <a class="src" href="https://github.com/huanpeng69-cmyk/corner-buddy" target="_blank" rel="noopener">GitHub 源码</a>
+            <a class="demo" href="https://github.com/huanpeng69-cmyk/corner-buddy/releases/latest" target="_blank" rel="noopener">下载安装包</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="repo-card" data-cat="product">
+        <div class="repo-shot">
+          <img src="assets/video-study.png" alt="视频学习助手截图" onerror="this.remove()" />
+          <span class="ph">视频学习助手，项目截图</span>
+        </div>
+        <div class="repo-head">
+          <div class="name">视频学习助手 <span class="gh">video-study-extension</span></div>
+          <div class="desc">视频学习 Chrome 扩展：按播放进度自动分段、生成带原字幕引用的小节，把看完就忘变成可复习笔记</div>
+        </div>
+        <div class="repo-body">
+          <div class="case-row"><div class="t"><span class="lab pain">痛点</span>视频学习边看边吸收难，字幕看完即过、无法沉淀成可回看的知识点</div></div>
+          <div class="case-row"><div class="t"><span class="lab act">做法</span>TypeScript 开发 Chrome MV3 扩展；Service Worker 按真实播放进度每 30 秒触发 SSE 流式自动学习，逐节点生成带原字幕引用的小节；做失败熔断 + 断点恢复；本地 Whisper 转写支持无字幕视频</div></div>
+          <div class="case-row"><div class="t"><span class="lab win">结果</span>类型检查 + 42 测试文件、501 项测试 + 生产构建全通过，用真实 B站、YouTube 联调验证，已开源</div></div>
+          <div class="case-row"><div class="t"><span class="lab me">我的角色</span>独立设计扩展架构（MV3 Service Worker、内容脚本、弹窗）、SSE 流式学习协议与失败恢复机制，编写测试套件保证可发布质量</div></div>
+          <div class="case-row"><div class="t"><span class="lab fix">踩坑与解决</span>早期每次刷新都从 0 重学、重复消耗 token，加断点续学 + 失败熔断，中断后从最近节点恢复；无字幕视频无法分段，接本地 Whisper 先转写再分段</div></div>
+          <div class="repo-tags"><span>TypeScript</span><span>Chrome MV3</span><span>Whisper</span><span>SSE</span><span>视频学习</span></div>
+          <div class="repo-links">
+            <a class="src" href="https://github.com/huanpeng69-cmyk/video-study-extension" target="_blank" rel="noopener">GitHub 源码</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT & EXPERIENCE ===== -->
+<section id="intern">
+  <div class="wrap">
+    <div class="bio-intro"><h2>我是李焕鹏 <img src="assets/avatar.jpg" alt=""/>，<br>拥有工程学背景 <span class="inline-shape shape-yellow" aria-hidden="true">✳</span> 的独立创造者，<br>把 AI 带进真实的 <span class="inline-shape shape-pink" aria-hidden="true">◒</span> 业务流程。</h2></div>
+    <div class="bio-collage">
+      <figure class="about-portrait"><img src="assets/avatar.jpg" alt="李焕鹏的个人照片" loading="lazy" width="240" height="280"/><figcaption class="handwritten">it's me, Huanpeng</figcaption></figure>
+      <div class="skill-strips" aria-label="关注方向"><span>AI 应用实践 <b aria-hidden="true">✳</b></span><span>Prompt 工程 <b aria-hidden="true">◐</b></span><span>工作流自动化 <b aria-hidden="true">↗</b></span><span>开源创造 <b aria-hidden="true">⌘</b></span></div>
+      <figure class="about-work-photo"><img src="assets/knowledge-graph.png" alt="企业知识库项目截图" loading="lazy" width="260" height="220"/><figcaption class="handwritten">from ideas to products</figcaption></figure>
+    </div>
+    <div class="about-grid"><aside class="bio-caption"><span class="eyebrow">MAIN BIO</span><p>中国 · 广东潮州<br>综合管理 → AI 应用落地</p><p class="missing-small">个人兴趣与生活照片：待补充</p></aside><div class="about-copy"><h3>懂业务，也热爱创造。</h3><p>从机械工程、机器人教学，到一线综合管理，我习惯先理解问题，再亲手做出解决方案。</p><p>AI 不是终点。把复杂的事变简单，把重复的工作交给系统，才是我想做的事。</p><div class="skills"><span>AI 工具应用</span><span>Prompt 工程</span><span>流程智能化</span><span>数据分析</span><span>培训能力</span><span>机器人 / 编程</span></div><button class="text-link" type="button" onclick="openResume()">读一读我的完整简历 ↗</button></div></div>
+    <h3 class="timeline-label">工作经历 <span>THE JOURNEY SO FAR</span></h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="time">2022.07 至今</div>
+        <h3>综合部主办 <span class="tag">AI 应用落地</span></h3>
+        <div class="org">中国水利水电第六工程局南方公司，黄埔红茶项目综合管理部</div>
+        <div class="org" style="font-size:var(--fs-1);opacity:.85;margin-top:3px">助理政工师，中共党员，所负责党小组获评公司优秀基层党组织，2025 年度绩效考核 A，ChatGPT 深度使用者</div>
+        <ul>
+          <li>AI 工具库与行政工作流：用 ChatGPT 等大模型搭建公文写作、数据整理、活动策划行政工作流，搭建并维护部门级 AI 工具库（200+ Prompt 模板 + 操作指引），常规公文处理效率明显提升。</li>
+          <li>数据与决策：主导 AI 辅助人力、薪酬分析，月度报表耗时由数天压缩至小时级；统筹约 200 人项目部综合事务。</li>
+          <li>公文与合同：起草处理公文、合同等文件逾千份，AI 模板化有效降低差错率（已把重复性工作半自动化）。</li>
+          <li>流程优化：优化采购与会务流程，实现单项降本（系统化思维，契合 AI 产品流程设计）。</li>
+          <li><b>党建（重点工作）：</b>牵头支部标准化建设与党建品牌落地，所负责党小组 2023 年获评公司优秀基层党组织；累计组织主题党日 20+ 次、党员教育 80+ 次，覆盖支部全体党员。</li>
+          <li>宣传与成果：撰写宣传稿 60 篇（省级媒体录用 8 篇）、发表论文 1 篇。</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="time">2018.07 2020.09</div>
+        <h3>机器人编程教师</h3>
+        <div class="org">深圳市智造家创客教育，教育行业</div>
+        <ul>
+          <li>机器人编程教学：面向 7–16 岁学员讲授机器人逻辑与编程思维，累计带班 30+ 期、学员 500+ 人，竞赛获奖率超 60%。</li>
+          <li>课程与培训：独立开发 12 套阶梯式课件，课中管理与课后反馈全流程标准化，学员续报率提升至 85%（具备把复杂概念讲清楚的培训能力）。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PLAYGROUND ===== -->
+<section id="playground" class="play-section">
+  <div class="wrap">
+    <div class="section-label"><span>03 / THE PLAYGROUND</span><span>LESS TALK. MORE INTERACTION.</span></div>
+    <div class="sec-head lab-heading"><h2>别只看，<br><em>亲手试试看。</em></h2><p><span class="live-dot" aria-hidden="true"></span> 无需安装，直接体验。<br><span class="lab-disclaimer">以下为本地交互演示，不调用真实 AI 服务。</span></p></div>
+    <div class="play-tabs" id="playTabs">
+      <button class="ptab active" data-p="workbench">综合工作台</button>
+      <button class="ptab" data-p="kg">企业知识库</button>
+      <button class="ptab" data-p="amazon">Amazon OS</button>
+      <button class="ptab" data-p="gongkao">公考私教</button>
+      <button class="ptab" data-p="style">颜搭AI</button>
+      <button class="ptab" data-p="corner">角落搭子</button>
+      <button class="ptab" data-p="duel">命运对决</button>
+      <button class="ptab" data-p="video">视频学习助手</button>
+    </div>
+
+    <div class="play-stage">
+
+      <!-- 1 综合工作台 -->
+      <div class="panel active" data-panel="workbench">
+        <div class="panel-grid">
+          <div class="panel-intro">
+            <h4>综合管理工作台</h4>
+            <div class="pi-row"><b>痛点</b>：人事、办公、党建流程散落 Excel，重复劳动多、难追溯。</div>
+            <div class="pi-row"><b>做法</b>：Vue + FastAPI 自建工作台，审批线上流转、状态统一收口。</div>
+            <div class="pi-row"><b>结果</b>：高频事务一站式办理、审批留痕可溯。</div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-head">审批中心 <span style="font-size:var(--fs-1);color:var(--muted);font-weight:600">待办 → 已批 / 驳回</span></div>
+            <div class="tabs2" id="wbTabs2">
+              <button class="t2 active" data-s="todo">待审</button>
+              <button class="t2" data-s="done">已批</button>
+              <button class="t2" data-s="reject">驳回</button>
+            </div>
+            <ul class="req-list" id="wbList"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 企业知识库 -->
+      <div class="panel" data-panel="kg">
+        <div class="panel-grid">
+          <div class="panel-intro">
+            <h4>企业知识库</h4>
+            <div class="pi-row"><b>痛点</b>：文档散落各处，纯向量检索答不准关系型问题、答案无出处。</div>
+            <div class="pi-row"><b>做法</b>：向量 + 知识图谱双路混合 RAG，双信号重排。</div>
+            <div class="pi-row"><b>结果</b>：答案带引用编号与来源，可溯源。</div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-head">知识库问答 <span style="font-size:var(--fs-1);color:var(--muted);font-weight:600">向量 + 图谱双路</span></div>
+            <div class="kgin"><input id="kgInput" placeholder="例如：党员组织关系转接需要哪些材料？" /><button class="btn-run" id="kgRun">检索</button></div>
+            <div class="kchips">
+              <button class="kchip" data-q="党员组织关系转接需要哪些材料？">党员关系转接</button>
+              <button class="kchip" data-q="项目部采购流程怎么走？">采购流程</button>
+              <button class="kchip" data-q="绩效奖金一般怎么核算？">绩效奖金</button>
+            </div>
+            <div class="kg-ans" id="kgAns">输入问题后点击检索，将模拟向量 + 图谱双路召回并给出带引用的答案。</div>
+            <div class="kg-src" id="kgSrc"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Amazon OS -->
+      <div class="panel" data-panel="amazon">
+        <div class="panel-grid">
+          <div class="panel-intro">
+            <h4>Amazon AI Growth OS</h4>
+            <div class="pi-row"><b>痛点</b>：选品、关键词、Listing、广告全链路割裂。</div>
+            <div class="pi-row"><b>做法</b>：基于 Claude Agent SDK 编排 56 个亚马逊领域技能。</div>
+            <div class="pi-row"><b>结果</b>：一句话自然语言即调度全链路助手。</div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-head">Agent 调度台 <span style="font-size:var(--fs-1);color:var(--muted);font-weight:600">Claude Agent SDK，56 技能</span></div>
+            <div class="amz-in"><input id="amzInput" placeholder="输入品类或 ASIN，如：无线蓝牙耳机" /><button class="btn-run" id="amzRun">运行</button></div>
+            <div class="kchips">
+              <button class="kchip" data-q="无线蓝牙耳机">无线蓝牙耳机</button>
+              <button class="kchip" data-q="瑜伽垫">瑜伽垫</button>
+              <button class="kchip" data-q="B0C1234567">B0C1234567</button>
+            </div>
+            <div class="amz-log" id="amzLog"></div>
+            <div class="amz-report" id="amzReport" style="display:none">
+              <div class="amz-box"><div class="t">选品机会评分</div><div class="v" id="amzScore">—</div></div>
+              <div class="amz-box"><div class="t">建议核心关键词</div><div class="v" id="amzKw" style="font-size:var(--fs-2)">—</div></div>
+              <div class="amz-box"><div class="t">FBA 单件费用估</div><div class="v" id="amzFba">—</div></div>
+              <div class="amz-box"><div class="t">风险提醒</div><div class="v" id="amzRisk" style="font-size:var(--fs-1)">—</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 公考私教 -->
+      <div class="panel" data-panel="gongkao">
+        <div class="panel-grid">
+          <div class="panel-intro">
+            <h4>公考私教 gongkao-ai</h4>
+            <div class="pi-row"><b>痛点</b>：错题没人讲、市面 App 贵且不个性化。</div>
+            <div class="pi-row"><b>做法</b>：Next.js + Capacitor 双端，Agnes AI 漫画讲解。</div>
+            <div class="pi-row"><b>结果</b>：Android 可用，把看答案变成私教带练。</div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-head">行测，AI 私教讲解</div>
+            <div class="gk-q">【常识】下列哪种情形属于《民法典》规定的不可抗力？</div>
+            <button class="gk-opt" data-correct="1">A. 商家因疫情封控无法按期发货</button>
+            <button class="gk-opt" data-correct="0">B. 甲因疏忽大意忘记履行合同</button>
+            <button class="gk-opt" data-correct="0">C. 乙因个人原因临时毁约</button>
+            <button class="gk-opt" data-correct="0">D. 丙为抬高价格拒绝供货</button>
+            <div class="gk-panel" id="gkPanel">
+              <div class="ttl">私教思路分镜</div>
+              <div class="gk-strip">
+                <div class="gk-frame"><span class="n">① 抓关键词</span>题干问不可抗力 = 不能预见、避免、克服的客观情况</div>
+                <div class="gk-frame"><span class="n">② 排除过错</span>B/C/D 都是人为可控或主观违约，不属于客观不能</div>
+                <div class="gk-frame"><span class="n">③ 锁定答案</span>疫情封控属典型不可抗力，选 A</div>
+              </div>
+              <div style="margin-top:10px;font-size:var(--fs-2);line-height:1.6">解析：不可抗力须为客观、外部、不可归责于当事人的事件；疫情政府封控正合此定义，商家可依法免责或延期。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 颜搭 AI -->
+      <div class="panel" data-panel="style">
+        <div class="panel-grid">
+          <div class="panel-intro">
+            <h4>颜搭 AI style-prompt-ui</h4>
+            <div class="pi-row"><b>痛点</b>：想用 AI 生成穿搭、形象图却不会写提示词。</div>
+            <div class="pi-row"><b>做法</b>：变量插槽 + 风格权重模板，前端状态机实时预览。</div>
+            <div class="pi-row"><b>结果</b>：勾选要素即生成可驱动生图 API 的高质量提示词。</div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-head">形象提示词生成器</div>
+            <div class="style-slot"><label>场景</label><select id="stScene"><option>日常通勤</option><option>约会聚餐</option><option>国风写真</option><option>海边度假</option><option>职场会议</option></select></div>
+            <div class="style-slot"><label>风格</label><select id="stStyle"><option>简约高级</option><option>韩系温柔</option><option>法式慵懒</option><option>新中式</option><option>运动机能</option></select></div>
+            <div class="style-slot"><label>体型优化</label><select id="stBody"><option>显高显瘦</option><option>修饰肩线</option><option>拉长腿比</option><option>遮肉显轻盈</option></select></div>
+            <div class="style-slot"><label>季节 / 预算</label><select id="stSeason"><option>春秋，中等预算</option><option>夏季，轻薄透气</option><option>冬季，保暖质感</option><option>不限预算，高级感</option></select></div>
+            <div class="prompt-out" id="stOut"></div>
+            <button class="copy-btn" id="stCopy">复制提示词</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 角落搭子 -->
+      <div class="panel" data-panel="corner">
+        <div class="panel-grid">
+          <div class="panel-intro">
+            <h4>角落搭子 corner-buddy</h4>
+            <div class="pi-row"><b>痛点</b>：桌面宠物多为假动画、隐私存疑。</div>
+            <div class="pi-row"><b>做法</b>：Electron + FFmpeg 生成 15 段真实动作视频。</div>
+            <div class="pi-row"><b>结果</b>：安静待在桌面角落，双击即用。</div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-head">桌面宠物预览</div>
+            <div class="pet-win"><div class="pet" id="pet">🐱</div></div>
+            <div class="pet-status" id="petStatus">状态：安静待机中</div>
+            <div class="pet-btns">
+              <button data-a="idle">待机</button>
+              <button data-a="pat">摸摸头</button>
+              <button data-a="dance">跳舞</button>
+              <button data-a="sleep">睡觉</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 命运对决 -->
+      <div class="panel" data-panel="duel">
+        <div class="panel-grid">
+          <div class="panel-intro">
+            <h4>命运对决 Destiny Duel</h4>
+            <div class="pi-row"><b>痛点</b>：无离线中文人机环境、规则硬核劝退。</div>
+            <div class="pi-row"><b>做法</b>：boardgame.io 实现类游戏王对战 + 脚本 AI。</div>
+            <div class="pi-row"><b>结果</b>：14,586 张中文卡鉴、卡面纯 CSS、零依赖。</div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-head">迷你对战（你 vs 脚本 AI）</div>
+            <div class="duel-row"><span class="who">你</span><div class="duel-bar me"><i id="lpMe" style="width:100%"></i></div></div>
+            <div class="duel-row"><span class="who">AI</span><div class="duel-bar foe"><i id="lpFoe" style="width:100%"></i></div></div>
+            <div class="duel-log" id="duelLog">点击召唤怪兽开始对战。每回合你召唤攻击，AI 也会反击。</div>
+            <button class="btn-run" id="duelBtn">召唤怪兽</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 视频学习助手 -->
+      <div class="panel" data-panel="video">
+        <div class="panel-grid">
+          <div class="panel-intro">
+            <h4>视频学习助手</h4>
+            <div class="pi-row"><b>痛点</b>：边看边吸收难、字幕无法沉淀。</div>
+            <div class="pi-row"><b>做法</b>：Chrome 扩展按播放进度每 30 秒触发 SSE 流式分段。</div>
+            <div class="pi-row"><b>结果</b>：逐节点生成带原字幕引用的小节，可复习。</div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-head">自动生成学习笔记</div>
+            <div class="vid-in"><input id="vidInput" value="https://www.bilibili.com/video/BV1xx411c7mD" /><button class="btn-run" id="vidRun">生成笔记</button></div>
+            <ul class="note-tl" id="vidNotes"><li class="note"><span class="ts">00:00</span><div class="nt">粘贴视频链接后点击生成笔记，扩展会按真实播放进度自动分段。<span class="ns">演示数据</span></div></li></ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== EDUCATION ===== -->
+<section id="edu">
+  <div class="wrap">
+    <div class="section-label"><span>04 / FOUNDATIONS</span><span>ENGINEERING, AT HEART.</span></div>
+    <div class="sec-head"><h2>工程思维的起点。</h2><p>教育背景 / EDUCATION</p></div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="school">岭南师范学院</div>
+        <div class="major">机械设计制造及其自动化，本科</div>
+        <div class="meta">2020.09 2022.07</div>
+        <div class="exp">荣誉：2022 年获岭南师范学院优秀毕业生。工程学背景培养严谨结构化思维。</div>
+      </div>
+      <div class="edu-card">
+        <div class="school">广东理工职业学院</div>
+        <div class="major">模具设计与制造，专科</div>
+        <div class="meta">2015.09 2018.07</div>
+        <div class="exp">相关技能：英语四级、MS OFFICE、WPS，自动化、制造基础。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INTERVIEW ASSISTANT ===== -->
+<section id="interview">
+  <div class="wrap">
+    <div class="iv-grid">
+      <div class="iv-left">
+        <div class="kicker">05 / A CONVERSATION</div>
+        <h2 class="iv-title">不如，<br><em>直接问我。</em></h2>
+        <p class="iv-sub">经历、项目，或是一次转向 AI 的决定。这个小助手用预设的公开资料回答，让你换一种方式认识我。无需联网，不接入真实大模型。</p>
+        <div class="iv-hint"><span class="dotp"></span>点一下，像真面试官一样追问</div>
+        <div class="iv-chips" id="ivChips">
+          <button class="chip" data-q="0">60 秒介绍你自己</button>
+          <button class="chip" data-q="1">为什么从综合管理转向 AI？</button>
+          <button class="chip" data-q="2">最有代表性的项目？</button>
+          <button class="chip" data-q="3">如何把 AI 用到真实工作流？</button>
+          <button class="chip" data-q="4">讲讲降本 15% 的经历</button>
+          <button class="chip" data-q="5">你的核心竞争力？</button>
+          <button class="chip" data-q="6">怎么和开发、产品协作？</button>
+          <button class="chip" data-q="7">你还有什么想问的？</button>
+          <button class="chip" data-q="8">讲讲企业知识库项目</button>
+          <button class="chip" data-q="9">党建方面做过什么？</button>
+          <button class="chip" data-q="10">讲讲综合管理工作台</button>
+          <button class="chip" data-q="11">总结本次对话</button>
+        </div>
+      </div>
+      <div class="iv-right">
+        <div class="chat-card">
+          <div class="chat-head">
+            <div class="chat-avatar">李</div>
+            <div>
+              <div class="chat-name">李焕鹏，AI 面试助手</div>
+              <div class="chat-status"><span class="status-dot"></span>在线，基于公开资料模拟回答</div>
+            </div>
+            <div class="chat-actions">
+              <button class="chat-btn" onclick="clearChat()">清空</button>
+            </div>
+          </div>
+          <div class="chat-body" id="chatBody" role="log" aria-label="对话记录" aria-live="polite" aria-relevant="additions">
+            <div class="msg msg-ai">
+              <div class="msg-av">AI</div>
+              <div class="msg-body">
+                <div class="bubble">你好，我是李焕鹏的 AI 面试助手。所有回答都基于这个网页的公开资料（简历、开源仓库、教育与工作经历）。你可以从下方快捷问题开始，或者在底部输入框直接问我。</div>
+                <div class="msg-tag">基于公开资料</div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input">
+            <input id="chatInput" type="text" aria-label="向面试助手提问" placeholder="聊聊项目，或问问我的经历…" onkeydown="if(event.key==='Enter')sendChat()" />
+            <button class="send-btn" onclick="sendChat()">发送</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="wrap">
+    <div class="section-label"><span>06 / WHAT’S NEXT?</span><span>GOOD THINGS START WITH A HELLO.</span></div>
+    <div class="contact-main"><h2>下一次，<br>一起做点<span>不一样。</span></h2><a class="contact-orb" href="mailto:huanpeng69@gmail.com" aria-label="发邮件给李焕鹏" data-magnetic><span aria-hidden="true">↗</span><small>LET’S TALK</small></a></div>
+    <div class="contact-bottom"><div><p>有个想法？来聊聊。</p><a class="contact-email" href="mailto:huanpeng69@gmail.com">huanpeng69@gmail.com <span aria-hidden="true">↗</span></a><button class="copy-email" id="copyEmail" type="button" aria-label="复制邮箱地址">复制邮箱</button></div><a class="contact-github" href="https://github.com/huanpeng69-cmyk" target="_blank" rel="noopener noreferrer">也可以在 GitHub 找到我 <span aria-hidden="true">↗</span></a></div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer"><div class="wrap footer-grid"><div class="footer-about"><h2 class="handwritten">Let's keep in touch.</h2><p>有个想法？来聊聊。<br>保持好奇，持续创造。</p><a href="mailto:huanpeng69@gmail.com">huanpeng69@gmail.com ↗</a></div><div><h3 class="handwritten">Pages</h3><a href="#home">首页</a><a href="#intern">关于我</a><a href="#repos">开源项目</a><a href="#playground">交互实验室</a><a href="#interview">资料问答</a></div><div><h3 class="handwritten">Socials</h3><a href="mailto:huanpeng69@gmail.com">Email ↗</a><a href="https://github.com/huanpeng69-cmyk" target="_blank" rel="noopener noreferrer">GitHub ↗</a><span class="missing-small">LinkedIn：未提供</span><span class="missing-small">X / Twitter：未提供</span></div></div><div class="wrap footer-bottom"><p>© <span id="copyrightYear">2026</span> 李焕鹏</p><span>个人资料来自原站；未添加虚构经历。</span><a href="#home">回到顶部 ↑</a></div></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ===== RESUME MODAL ===== -->
+<div class="modal-mask" id="resumeModal" role="dialog" aria-modal="true" aria-labelledby="resumeTitle" tabindex="-1" onclick="if(event.target===this)closeResume()">
+  <div class="modal">
+    <button class="close" type="button" aria-label="关闭简历" onclick="closeResume()">✕</button>
+    <h2 id="resumeTitle">李焕鹏</h2>
+    <div class="m-role">男，综合管理，专注 AI 应用落地 / 产品</div>
+    <div class="resume-sec">
+      <h4>联系方式</h4>
+      <p>电话：13189201770，邮箱：huanpeng69@gmail.com，QQ：2496064926</p>
+      <p>广东潮州，政治面貌：中共党员，期望薪资：8000~12000 元/月，求职类型：社招</p>
+    </div>
+    <div class="resume-sec">
+      <h4>求职意向（AI 方向）</h4>
+      <p>意向岗位：AI 产品、大模型应用落地、AI 解决方案。用工程逻辑 + 一线管理 + AI 工具深度使用的组合，推动 AI 在真实业务里落地。</p>
+    </div>
+    <div class="resume-sec">
+      <h4>工作经历</h4>
+      <ul>
+        <li>中国水利水电第六工程局南方公司，黄埔红茶项目综合管理部（2022.07 至今，综合部主办）：搭建公文、数据、策划 AI 行政工作流，沉淀 200+ Prompt 模板、常规公文处理效率明显提升；统筹约 200 人项目部；起草公文、合同等文件逾千份（AI 模板化有效降低差错率）；优化采购与会务流程、实现单项降本；组织主题党日 20+ 次、宣传稿 60 篇（省媒录用 8 篇）。2025 绩效 A、助理政工师。</li>
+        <li>深圳市智造家创客教育，机器人编程教师（2018.07 2020.09）：讲授机器人逻辑与编程，累计带班 30+ 期、学员 500+ 人、竞赛获奖率超 60%；独立开发 12 套课件，学员续报率提升至 85%。</li>
+      </ul>
+    </div>
+    <div class="resume-sec">
+      <h4>AI 实践 / 学习</h4>
+      <ul>
+        <li>已落地：大模型 + 行政办公工作流（公文生成、数据整理、活动策划）。</li>
+        <li>进行中：系统学习 Prompt 工程、Agent 搭建、大模型应用，目标做 AI 应用落地。</li>
+      </ul>
+    </div>
+    <div class="resume-sec">
+      <h4>开源项目</h4>
+      <ul>
+        <li><b>命运对决 Destiny Duel（destiny-duel）</b>：新手友好的类游戏王卡牌对战，boardgame.io + React 人机对战；14,586 张中文卡牌图鉴（对接 YGOPRODeck + 百鸽 ygocdb，97.6% 译名覆盖）、Web Audio 合成音效、44 个测试，Windows 一键启动。github.com/huanpeng69-cmyk/destiny-duel</li>
+        <li><b>综合管理工作台（comprehensive-workbench）</b>：Enterprise AI Workspace，自建 Vue 工作台整合工作台首页、待办中心、人事管理（人员花名册、员工制作）、办公管理（通知公告、公章使用登记、公务接待）、党建管理（党员名册、党费季度缴纳）与请假等审批流；AI 助手接入大模型实现智能起草与问答。github.com/huanpeng69-cmyk/comprehensive-workbench</li>
+        <li><b>企业知识库（enterprise-knowledge-graph-rag）</b>：企业知识库 + 知识图谱 RAG 客服。文档解析分块建向量索引，抽取实体、关系入库建图谱并保留来源证据，向量 + 图谱双路混合召回，答案附引用编号与来源位置；支持 1–3 跳图谱查询与原生 SVG 可视化、三级 RBAC 与审计日志。技术栈 FastAPI + Chroma + SQLite + Agnes AI / DashScope。github.com/huanpeng69-cmyk/enterprise-knowledge-graph-rag</li>
+        <li><b>公考私教（gongkao-ai）</b>：Next.js + Capacitor + Agnes AI 的 AI 公考学习应用，含题库、模考、错题 AI 讲解、百宝箱，支持 Web 与 Android 双端；错题讲解提示词按题型打磨，并用 30 道真实错题做回归测试。github.com/huanpeng69-cmyk/gongkao-ai</li>
+        <li><b>颜搭AI（style-prompt-ui）</b>：发型、穿搭、国风形象的 AI 提示词与方案板工具，已部署 GitHub Pages 在线预览。github.com/huanpeng69-cmyk/style-prompt-ui</li>
+        <li><b>Amazon AI Growth OS（amazon-ai-growth-os）</b>：面向亚马逊卖家的 AI 全链路助手，基于 Claude Agent SDK 编排 56 个亚马逊领域专业技能（8 个生产就绪 + 25+ Beta），覆盖选品调研、关键词挖掘、Listing 优化、FBA/关税、PPC 广告、自动上架；Express + WebSocket 服务端 + React 三栏工作台 + Playwright MCP 浏览器自动化，附《对抗性审查报告》。github.com/huanpeng69-cmyk/amazon-ai-growth-os</li>
+        <li><b>角落搭子（corner-buddy）</b>：透明置顶 Windows 桌面宠物，上传真实宠物照经 Agnes 图生视频 + FFmpeg 绿幕抠像生成 15 段真实动作（VP9 透明 WebM），隐私优先、日常离线。github.com/huanpeng69-cmyk/corner-buddy</li>
+      </ul>
+    </div>
+    <div class="resume-sec">
+      <h4>教育背景</h4>
+      <p>岭南师范学院，机械设计制造及其自动化（本科），2020.09 2022.07</p>
+      <p>广东理工职业学院，模具设计与制造（专科），2015.09 2018.07</p>
+    </div>
+    <div class="resume-sec">
+      <h4>相关技能</h4>
+      <p>AI 工具应用（ChatGPT 等）、Prompt 工程、工作流搭建、流程优化、团队协调、公文写作、数据分析、英语四级、MS OFFICE、WPS。</p>
+    </div>
+    <div class="resume-sec">
+      <h4>荣誉成就</h4>
+      <ul>
+        <li>2024 年取得助理政工师职称</li>
+        <li>2023 年所负责党小组获评公司优秀基层党组织</li>
+        <li>2022 年获岭南师范学院优秀毕业生</li>
+      </ul>
+    </div>
+    <div class="resume-sec">
+      <h4>自我评价</h4>
+      <p>本人积极乐观、严于律己。拥有工程学背景培养出的严谨逻辑思维，曾在教育行业锻炼出较强的沟通与培训能力，现聚焦 AI 应用落地。擅长用 AI 工具把重复工作自动化、把流程系统化，致力于把大模型能力落地到真实业务场景，提升组织效率。</p>
+    </div>
+    <a class="download" href="#" onclick="window.print();return false;">打印 / 保存为 PDF</a>
+  </div>
+</div>
+
+<script>
+  /* ===== Reveal on scroll + count-up + nav spy ===== */
+  (function(){
+    const io=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);} });
+    },{threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    const statsIO=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.querySelectorAll('.num').forEach(el=>{
+            if(el.dataset.done) return; el.dataset.done=1;
+            const to=+el.dataset.to, suffix=el.dataset.suffix||'';
+            let cur=0; const step=Math.max(1,Math.ceil(to/40));
+            const t=setInterval(()=>{cur+=step; if(cur>=to){cur=to;clearInterval(t);} el.textContent=cur+suffix;},25);
+          });
+          statsIO.unobserve(e.target);
+        }
+      });
+    },{threshold:.3});
+    const sg=document.querySelector('.stats-grid'); if(sg) statsIO.observe(sg);
+
+    const links=[...document.querySelectorAll('.nav-links a')];
+    const spy=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const id=e.target.id;
+          links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    ['home','intern','repos','edu','interview'].forEach(id=>{const s=document.getElementById(id);if(s)spy.observe(s);});
+  })();
+
+  /* ===== Resume modal + mobile menu ===== */
+  function openResume(){document.getElementById('resumeModal').classList.add('show');document.body.style.overflow='hidden'}
+  function closeResume(){document.getElementById('resumeModal').classList.remove('show');document.body.style.overflow=''}
+  function toggleMenu(){
+    const btn=document.getElementById('menuBtn');const menu=document.getElementById('mobileMenu');
+    btn.classList.toggle('open');menu.classList.toggle('show');
+    document.body.style.overflow=menu.classList.contains('show')?'hidden':'';
+  }
+
+  /* ===== Interview Assistant ===== */
+  const faqs=[
+    {kw:['60','介绍','你好','自我','嗨','你是谁'],a:"李焕鹏，31 岁，本科（岭南师范学院，机械设计制造及其自动化），中共党员，助理政工师。现在在中国水利水电第六工程局南方公司，黄埔红茶项目综合管理部，2022 年起从综合部业务员做到综合部主办，2025 绩效 A。过往：曾在深圳市智造家创客教育担任机器人编程教师 2 年。现在重点方向是把 ChatGPT 等大模型能力落地到行政、数据、流程的真实业务里，并把动手做出来的 7 个 AI 开源项目（命运对决 Destiny Duel、综合管理工作台、企业知识库、公考私教、颜搭AI、Amazon AI Growth OS、角落搭子）当成把能力装进产品的练习。"},
+    {kw:['为什么','转向','转','为什么从综合','为什么从'],a:"我转向 AI 应用落地，并不是因为技术热，是因为它和我过去的综合管理岗位、工程学逻辑正好打通：综合管理让我接触一线流程与真实场景，让我知道哪些事最碎、最机械、最该被自动化，而工程学背景给了我严谨的逻辑与系统化能力。AI 应用就是把这两件事结合起来：让大模型去落地真实业务里最琐碎、最有明确输入输出的工作，把人解放出来做更高价值的判断与协调。这就是我的 AI 应用落地方向。"},
+    {kw:['代表','产品能力','工作台','comprehensive','workbench','最能','项目'],a:"我会选综合管理工作台（comprehensive-workbench）——它离我的本职最近，也是我自己每天在用的系统：综合管理事务碎、跨条线，我自建 Vue 工作台把工作台首页、待办中心、人事管理（人员花名册、员工制作）、办公管理（通知公告、公章使用登记、公务接待）、党建管理（党员名册、党费季度缴纳）收口到统一入口，内置请假等审批流（待审、已批、驳回全状态流转），AI 助手接入大模型做智能起草与问答。另一个代表作是企业知识库（enterprise-knowledge-graph-rag）：向量 + 知识图谱双路混合召回，答案带引用编号与来源证据，冲突时以原文为准，还做了 1–3 跳图谱查询、SVG 可视化、三级 RBAC 与审计日志。这两个项目让我完整经历 0→1 的产品思路：用户场景抽象、需求拆解、技术选型、上线部署、迭代反馈。"},
+    {kw:['工作流','怎么用','用 ai','用到','chatgpt','prompt','提示词'],a:"我在部门里把 ChatGPT 当成公文生成、数据整理、活动策划的助手。具体做法：① 把重复性公文（通知、报告、汇报）写成 Prompt 模板，让 AI 输出初稿，我做润色与定稿，单篇耗时明显下降；② 用 AI 把薪酬、成本等表格数据自动结构化整理，支撑年度预算；③ 活动策划阶段用 AI 给框架与点子，再人工补现场细节。把这些沉淀成可复用 Prompt 库，是部门级的 AI + 行政工作流。"},
+    {kw:['降本','15%','10%','流程','sop','优化'],a:"在综合管理岗位上，我把重复的行政流程系统化、模板化：① 用 ChatGPT 等大模型沉淀 200+ 可复用 Prompt 模板，常规公文处理效率明显提升；② 优化采购与会务流程、引入电子审批 + 集中采购，实现单项降本；③ 主导 AI 辅助人力、薪酬分析，月度报表耗时由数天压缩至小时级。这些让我看到流程系统化 + AI 带来的真实价值，也是我想扩展到 AI 产品流程设计的起点。"},
+    {kw:['核心','优势','竞争力','为什么选我','凭什么'],a:"三件事加在一起，是我相对纯技术背景候选人的差异点：① 工程学逻辑（机械本科）——能写出产品流程图、SOP，能和技术聊实现；② 一线综合管理（管 200 人项目部、负责党建工会薪酬差旅）——懂真实业务、能把模糊需求拆成可交付动作；③ AI 实战（已上线多个开源项目 + 日常 ChatGPT 提效）——不是听过，是做过。这三件事叠在一起，正好对应 AI 产品、落地岗需要的「技术 × 业务 × AI 实操」三角能力。"},
+    {kw:['合作','沟通','团队','协作','开发','技术'],a:"我的协作模型是翻译 + 桥梁：综合管理让我能在业务侧与技术侧之间做翻译——把一线用户的模糊诉求写成可拆解的产品需求、把技术方案的可解释版本反馈给业务方。我不写代码交付，但我能看懂代码、跑通本地项目、问对问题、能和技术对得上话。这正好是 AI 产品岗最需要的协作能力。"},
+    {kw:['还有什么','反问','问我','你想了解','任何问题'],a:"三个方向我都很想了解：① 这个 AI 产品岗位的核心场景是什么、谁在使用、当前最大的痛点是什么？② 团队里 AI 应用落地的方法论、工具栈是怎么样的（Prompt 库？Agent 平台？私有模型？调用第三方？）？③ 公司对应用落地的衡量标准是什么——是用户量、转化率、还是降本增效的量化指标？这样我能判断自己能不能帮上忙、能不能快速上手。"},
+    {kw:['rag','图谱','知识图谱','知识库','溯源','enterprise-knowledge'],a:"企业知识库（enterprise-knowledge-graph-rag）：痛点是纯向量检索答不准关系型问题、答案无法溯源。做法是 FastAPI + Chroma + SQLite 三层——文档上传后解析分块建向量索引；大模型按 JSON 契约抽实体、关系存入图谱，每条关系都保留原始 chunk、来源文件和页码证据；客服回答时同时召回向量片段与图谱关系，图谱与原文冲突时以原文为准，输出带引用编号、来源位置和检索模式。前端用原生 SVG 画 1–3 跳关系路径，含实体节点、关系箭头和谓词标签。还做了三级 RBAC（管理员、编辑、查看者）与审计日志。这个项目最核心的设计是证据优先——企业场景下答案必须能追到原文，否则没人敢用。"},
+    {kw:['党建','党小组','党务','党员','组织生活','政工'],a:"党建是我综合管理职责里的重头戏，不是兼职。我牵头支部标准化建设与党建品牌落地，累计组织主题党日 20+ 次、党员教育 80+ 次，覆盖支部全体党员；所负责党小组 2023 年获评公司优秀基层党组织。同时把宣传做成了党建的成果出口——撰写宣传稿 60 篇，其中 8 篇被省级媒体录用，另发表论文 1 篇。我的做法是党建不搞形式：用 AI 把材料起草、台账整理、活动方案这些事务性工作模板化，把时间省下来用在组织生活质量本身，这也是我理解 AI 落地的起点——先把最耗人的重复劳动自动化。"},
+    {kw:['工作台','comprehensive','workbench','综合管理项目'],a:"综合管理工作台（comprehensive-workbench）是我最新的项目，也是离我本职最近的一个：综合管理的特点是事务碎、跨条线，我自建 Vue 工作台把工作台首页、待办中心、人事管理（人员花名册、员工制作）、办公管理（通知公告、公章使用登记、公务接待）、党建管理（党员名册、党费季度缴纳）收口到统一入口，内置请假等审批流——待审、已批、已驳回全状态线上流转留痕；AI 助手接入大模型实现智能起草与问答。它解决的是每件事都要换一个入口、线下跑签字的问题：工作台收口之后，高频事务一个界面办完，AI 负责把最耗人的起草环节自动化。这个项目我既是开发者也是第一用户，每天拿自己的真实工作当测试集。"},
+    {kw:['总结','精简','摘要','回顾'],a:"本次对话要点（基于当前会话）：你在了解我从综合管理转向 AI 的动机，以及真实工作中如何用 ChatGPT 提效。核心信号——综合管理经验 + 工程学逻辑 + ChatGPT 深度使用 → AI 应用落地（命运对决 Destiny Duel、综合管理工作台、企业知识库、公考私教、颜搭AI、Amazon AI Growth OS、角落搭子）。如需更具体话题，可以再问我。"}
+  ];
+  const fallbackA="基于这份公开资料，我能聊的话题包括：自我介绍、转向 AI 的动机、代表项目、AI 落地工作流、降本经历、核心竞争力、协作模型等。你可以从左侧快捷问题选一个开始；如果想聊简历里没写的，可以发邮件给我 huanpeng69@gmail.com。";
+  const chipLabels=['60 秒介绍你自己','为什么从综合管理转向 AI？','最有代表性的项目？','如何把 AI 用到真实工作流？','讲讲降本 15% 的经历','你的核心竞争力？','怎么和开发 / 产品协作？','你还有什么想问的？','讲讲企业知识库项目','党建方面做过什么？','讲讲综合管理工作台','总结本次对话'];
+  function matchFaq(q){
+    q=q.toLowerCase().trim();
+    let best=null,bestScore=0;
+    for(const f of faqs){
+      let s=0;
+      for(const k of f.kw){if(q.includes(k.toLowerCase())) s+=k.length*2;}
+      if(s>bestScore){bestScore=s;best=f;}
+    }
+    return bestScore>0?best:null;
+  }
+  function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function appendMsg(role,text,tag){
+    const body=document.getElementById('chatBody');
+    const wrap=document.createElement('div');
+    wrap.className='msg '+(role==='user'?'msg-user':'msg-ai');
+    const av=role==='user'?'YOU':'AI';
+    wrap.innerHTML='<div class="msg-av">'+av+'</div><div class="msg-body"><div class="bubble">'+escHtml(text).replace(/\n/g,'<br>')+'</div>'+(tag?'<div class="msg-tag">'+tag+'</div>':'')+'</div>';
+    body.appendChild(wrap);
+    body.scrollTop=body.scrollHeight;
+  }
+  function showTyping(){
+    const body=document.getElementById('chatBody');
+    const wrap=document.createElement('div');
+    wrap.className='msg msg-ai';wrap.id='typingMsg';
+    wrap.innerHTML='<div class="msg-av">AI</div><div class="msg-body"><div class="bubble"><div class="chat-typing"><span></span><span></span><span></span></div></div><div class="typing-label">李焕鹏正在输入</div></div>';
+    body.appendChild(wrap);
+    body.scrollTop=body.scrollHeight;
+  }
+  function hideTyping(){const t=document.getElementById('typingMsg');if(t)t.remove();}
+  function showAI(text,tag){
+    const body=document.getElementById('chatBody');
+    const wrap=document.createElement('div');
+    wrap.className='msg msg-ai';
+    wrap.innerHTML='<div class="msg-av">AI</div><div class="msg-body"><div class="bubble"></div>'+(tag?'<div class="msg-tag">'+tag+'</div>':'')+'</div>';
+    body.appendChild(wrap);
+    const bubble=wrap.querySelector('.bubble');
+    const speed=Math.max(8,Math.round(20-text.length/25));
+    let i=0;
+    const timer=setInterval(()=>{
+      i++;
+      bubble.innerHTML=escHtml(text.slice(0,i)).replace(/\n/g,'<br>');
+      body.scrollTop=body.scrollHeight;
+      if(i>=text.length)clearInterval(timer);
+    },speed);
+  }
+  function setActiveChip(idx){
+    document.querySelectorAll('#ivChips .chip').forEach(c=>c.classList.remove('active'));
+    const chip=document.querySelector('#ivChips .chip[data-q="'+idx+'"]');
+    if(chip)chip.classList.add('active');
+  }
+  function askFAQ(idx){
+    const f=faqs[idx];if(!f)return;
+    setActiveChip(idx);
+    const tag=idx===faqs.length-1?'AI 总结，仅参考':'基于公开资料';
+    appendMsg('user',chipLabels[idx],'已发送');
+    showTyping();
+    setTimeout(()=>{hideTyping();showAI(f.a,tag);},680+Math.random()*420);
+  }
+  function sendChat(){
+    const inp=document.getElementById('chatInput');
+    const v=inp.value.trim();if(!v)return;
+    setActiveChip(-1);
+    appendMsg('user',v,'已发送');
+    inp.value='';
+    const f=matchFaq(v);
+    showTyping();
+    setTimeout(()=>{
+      hideTyping();
+      if(f)showAI(f.a,'基于公开资料');
+      else showAI(fallbackA,'基于公开资料');
+    },560+Math.random()*480);
+  }
+  function clearChat(){
+    setActiveChip(-1);
+    const body=document.getElementById('chatBody');
+    body.innerHTML='<div class="msg msg-ai"><div class="msg-av">AI</div><div class="msg-body"><div class="bubble">对话已清空。有什么想问的，可以从左侧快捷问题开始，或在底部输入框直接问。</div><div class="msg-tag">基于公开资料</div></div></div>';
+  }
+  document.getElementById('ivChips').addEventListener('click',function(e){
+    const b=e.target.closest('.chip');if(!b)return;
+    const idx=+b.dataset.q;if(!isNaN(idx))askFAQ(idx);
+  });
+</script>
+<script>
+
+// ===== Playground =====
+(function(){
+  // 标签切换
+  var tabs=document.querySelectorAll('#playTabs .ptab');
+  var panels=document.querySelectorAll('.panel');
+  tabs.forEach(function(t){t.addEventListener('click',function(){
+    tabs.forEach(function(x){x.classList.remove('active')});
+    panels.forEach(function(p){p.classList.remove('active')});
+    t.classList.add('active');
+    var p=document.querySelector('.panel[data-panel="'+t.dataset.p+'"]');
+    if(p)p.classList.add('active');
+  });});
+
+  // 1 综合工作台审批
+  var wbTodo=[{t:'请假审批',n:'张伟，事假 2 天',d:'2026-10-20~21'},
+              {t:'公章使用',n:'合同用印 HT-2026-118',d:'法务已预审'},
+              {t:'公务接待',n:'客户来访用餐',d:'预算 ¥680'}];
+  var wbDone=[],wbRej=[];
+  var wbList=document.getElementById('wbList');
+  function renderWB(){
+    var cur=document.querySelector('#wbTabs2 .t2.active').dataset.s;
+    var arr=cur==='todo'?wbTodo:cur==='done'?wbDone:wbRej;
+    wbList.innerHTML='';
+    if(!arr.length){wbList.innerHTML='<div style="color:var(--muted);font-size:var(--fs-2);padding:12px">该状态暂无记录</div>';return;}
+    arr.forEach(function(r,i){
+      var li=document.createElement('li');
+      li.className='req'+(cur!=='todo'?(cur==='done'?' done':' rej'):'');
+      var right=cur==='todo'?'<div class="ra"><button class="mini ok" data-i="'+i+'" data-a="done">批准</button><button class="mini no" data-i="'+i+'" data-a="reject">驳回</button></div>':'';
+      li.innerHTML='<div><div class="ri">'+r.t+'</div><div class="rm">'+r.n+' '+r.d+'</div></div>'+right;
+      wbList.appendChild(li);
+    });
+    if(cur==='todo'){
+      wbList.querySelectorAll('.mini').forEach(function(b){
+        b.addEventListener('click',function(){
+          var i=+b.dataset.i,a=b.dataset.a,r=wbTodo.splice(i,1)[0];
+          (a==='done'?wbDone:wbRej).push(r);renderWB();
+        });
+      });
+    }
+  }
+  document.querySelectorAll('#wbTabs2 .t2').forEach(function(b){b.addEventListener('click',function(){
+    document.querySelectorAll('#wbTabs2 .t2').forEach(function(x){x.classList.remove('active')});
+    b.classList.add('active');renderWB();
+  });});
+  renderWB();
+
+  // 2 企业知识库问答
+  var kgBase={
+    '党员组织关系转接需要哪些材料？':'党员组织关系转接一般需：① 组织关系介绍信（原党委开具）；② 党员档案 / 入党志愿书复印件；③ 本人身份证；④ 接收地党支部同意接收证明。转入后 30 日内完成落到支部的登记。',
+    '项目部采购流程怎么走？':'项目部采购通常：需求提报 → 比价 / 招标 → 合同审批 → 验收入库 → 付款。单笔超授权额度须上报公司集采或分管领导审批，留存比价与验收记录备查。',
+    '绩效奖金一般怎么核算？':'绩效奖金多按「基数 × 考核系数」核算：基数挂钩岗位职级与月度产值，系数来自 KPI / 360 考评。项目奖常按节点达成比例分段发放，延期或质量不达标会相应扣减。'
+  };
+  var kgSrcMap={
+    '党员组织关系转接需要哪些材料？':['《中国共产党党员教育管理工作条例》第三章','支部工作手册，组织关系转接','公司党建标准化台账，样例'],
+    '项目部采购流程怎么走？':['《项目部采购管理办法》第 4 条','公司集采授权清单 2026','合同审批单模板'],
+    '绩效奖金一般怎么核算？':['《薪酬与绩效管理制度》附件 2','2025 年度考核结果公示','项目节点奖发放细则']
+  };
+  var kgAns=document.getElementById('kgAns'),kgSrc=document.getElementById('kgSrc'),kgInput=document.getElementById('kgInput');
+  function runKG(q){
+    if(!q)return;
+    kgAns.innerHTML='<span style="color:var(--accent-strong);font-weight:800">检索中</span> 向量召回 + 图谱路径重排（双路混合）';
+    kgSrc.innerHTML='';
+    setTimeout(function(){
+      var ans=kgBase[q]||'已在知识库检索到相关条目。示例答案：该问题对应制度条款已归集，系统会返回带引用编号的要点，并标注来源文件与章节，确保答案可溯源、可复核。';
+      var src=kgSrcMap[q]||['相关制度文件，条目','知识图谱关系路径','历史问答记录'];
+      kgAns.innerHTML=ans+' <span class="cite">[1][2][3]</span>';
+      kgSrc.innerHTML='引用来源：'+src.map(function(s){return '<span>'+s+'</span>'}).join('');
+    },620);
+  }
+  document.getElementById('kgRun').addEventListener('click',function(){runKG(kgInput.value.trim());});
+  kgInput.addEventListener('keydown',function(e){if(e.key==='Enter')runKG(kgInput.value.trim());});
+  document.querySelectorAll('[data-panel="kg"] .kchip').forEach(function(c){c.addEventListener('click',function(){var q=c.dataset.q;kgInput.value=q;runKG(q);});});
+
+  // 3 Amazon Agent 调度
+  var amzLog=document.getElementById('amzLog'),amzReport=document.getElementById('amzReport'),amzInput=document.getElementById('amzInput');
+  var amzSkills=['amazon-one-shot，深度调研','amazon-keyword-research，关键词挖掘','amazon-listing-optimization，Listing 优化','amazon-fba-calculator，FBA 费用','amazon-ppc-campaign，PPC 广告','amazon-sales-estimator，销量估算','tariff-calculator-amazon，关税'];
+  function runAMZ(q){
+    if(!q)return;
+    amzReport.style.display='none';amzLog.innerHTML='';
+    var steps=['▶ 接收指令：'+q,'▶ 初始化 Claude Agent SDK MessageQueue'];
+    var i=0;
+    function step(){
+      if(i<steps.length){amzLog.innerHTML+='<div>'+steps[i]+'</div>';i++;setTimeout(step,260);return;}
+      if(amzSkillIdx<amzSkills.length){
+        amzLog.innerHTML+='<div class="ok">✓ 调度 '+amzSkills[amzSkillIdx]+'</div>';amzSkillIdx++;setTimeout(step,300);return;
+      }
+      amzLog.innerHTML+='<div class="hl">✓ 56 个亚马逊技能就绪，正在汇总报告</div>';
+      var score=(78+Math.floor(Math.random()*14))+' / 100';
+      var kw=['wireless earbuds','noise cancelling','long battery','gift 2026'].slice(0,2+Math.floor(Math.random()*2)).join('，');
+      var fba='$'+(2.1+Math.random()*1.5).toFixed(2);
+      document.getElementById('amzScore').textContent=score;
+      document.getElementById('amzKw').textContent=kw;
+      document.getElementById('amzFba').textContent=fba;
+      document.getElementById('amzRisk').textContent='类目竞争激烈，建议先做长尾词 + 差评点优化';
+      amzReport.style.display='grid';
+      amzLog.scrollTop=amzLog.scrollHeight;
+    }
+    var amzSkillIdx=0;step();
+  }
+  document.getElementById('amzRun').addEventListener('click',function(){runAMZ(amzInput.value.trim());});
+  amzInput.addEventListener('keydown',function(e){if(e.key==='Enter')runAMZ(amzInput.value.trim());});
+  document.querySelectorAll('[data-panel="amazon"] .kchip').forEach(function(c){c.addEventListener('click',function(){var q=c.dataset.q;amzInput.value=q;runAMZ(q);});});
+
+  // 4 公考私教答题
+  document.querySelectorAll('[data-panel="gongkao"] .gk-opt').forEach(function(o){
+    o.addEventListener('click',function(){
+      if(document.getElementById('gkPanel').classList.contains('show'))return;
+      var correct=(o.dataset.correct==='1');
+      document.querySelectorAll('[data-panel="gongkao"] .gk-opt').forEach(function(x){
+        if(x.dataset.correct==='1')x.classList.add('correct');
+      });
+      if(!correct)o.classList.add('wrong');
+      document.getElementById('gkPanel').classList.add('show');
+    });
+  });
+
+  // 5 颜搭提示词
+  function buildPrompt(){
+    var s=document.getElementById('stScene').value,st=document.getElementById('stStyle').value,
+        b=document.getElementById('stBody').value,se=document.getElementById('stSeason').value;
+    return '为一位亚洲女生生成一组'+s+'形象方案，整体风格：'+st+'。\n'+
+           '穿搭要求：'+b+'，'+se+'。\n'+
+           '画面：自然光、真实质感、全身构图、背景干净不抢主体；\n'+
+           '色彩协调、细节精致，突出高级感与亲和力。';
+  }
+  function refreshPrompt(){document.getElementById('stOut').textContent=buildPrompt();}
+  ['stScene','stStyle','stBody','stSeason'].forEach(function(id){document.getElementById(id).addEventListener('change',refreshPrompt);});
+  refreshPrompt();
+  document.getElementById('stCopy').addEventListener('click',function(){
+    var t=document.getElementById('stOut').textContent;
+    if(navigator.clipboard)navigator.clipboard.writeText(t);
+    var b=this;b.textContent='✓ 已复制';setTimeout(function(){b.textContent='复制提示词';},1400);
+  });
+
+  // 6 角落搭子
+  var pet=document.getElementById('pet'),petStatus=document.getElementById('petStatus');
+  var petState={idle:'安静待机中',pat:'被你摸头，眯眼摇尾巴',dance:'跟着节奏蹦蹦跳跳',sleep:'蜷起来睡着了'};
+  document.querySelectorAll('[data-panel="corner"] .pet-btns button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var a=b.dataset.a;pet.textContent=a==='sleep'?'😴':a==='dance'?'🐱':'🐱';petStatus.textContent='状态：'+petState[a];
+    });
+  });
+
+  // 7 命运对决
+  var lpMe=100,lpFoe=100,duelOver=false;
+  var duelLog=document.getElementById('duelLog');
+  document.getElementById('duelBtn').addEventListener('click',function(){
+    if(duelOver)return;
+    var dmg=600+Math.floor(Math.random()*500);
+    lpFoe=Math.max(0,lpFoe-dmg);
+    duelLog.innerHTML+='<div>⚔️ 你召唤青眼白龙攻击，造成 '+dmg+' 伤害！</div>';
+    document.getElementById('lpFoe').style.width=lpFoe+'%';
+    if(lpFoe<=0){duelLog.innerHTML+='<div style="color:var(--green-9);font-weight:800">🏆 你击败了脚本 AI，获胜！</div>';duelOver=true;return;}
+    var rdmg=400+Math.floor(Math.random()*500);
+    lpMe=Math.max(0,lpMe-rdmg);
+    setTimeout(function(){
+      duelLog.innerHTML+='<div>🤖 AI 反击，对你造成 '+rdmg+' 伤害。</div>';
+      document.getElementById('lpMe').style.width=lpMe+'%';
+      if(lpMe<=0){duelLog.innerHTML+='<div style="color:var(--red-9);font-weight:800">💀 你被 AI 击败，再试一次？</div>';duelOver=true;}
+      duelLog.scrollTop=duelLog.scrollHeight;
+    },360);
+  });
+
+  // 8 视频学习助手
+  var vidNotes=document.getElementById('vidNotes');
+  var demoNotes=[
+    {ts:'00:30',nt:'本节介绍项目背景与目标',ns:'字幕原文：今天我们来看这个开源项目的整体架构'},
+    {ts:'01:05',nt:'核心模块一：状态管理如何组织',ns:'字幕原文：这里用 reducer 把对战状态收口'},
+    {ts:'01:48',nt:'核心模块二：脚本 AI 的决策逻辑',ns:'字幕原文：AI 会在每回合评估手牌优劣'},
+    {ts:'02:33',nt:'小结与可复用思路',ns:'字幕原文：关键是把规则做成可测试的数据'}
+  ];
+  document.getElementById('vidRun').addEventListener('click',function(){
+    vidNotes.innerHTML='';
+    var i=0;
+    (function add(){
+      if(i>=demoNotes.length)return;
+      var n=demoNotes[i];
+      vidNotes.innerHTML+='<li class="note"><span class="ts">'+n.ts+'</span><div class="nt">'+n.nt+'<span class="ns">'+n.ns+'</span></div></li>';
+      i++;setTimeout(add,360);
+    })();
+  });
+})();
+
+</script>
+</body>
+</html>

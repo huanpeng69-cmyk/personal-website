@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="620" viewBox="0 0 960 620" font-family="'Segoe UI', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef1f6"/>
+      <stop offset="1" stop-color="#e3e8f0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff8a3d"/>
+      <stop offset="1" stop-color="#ff6a3d"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#1f2330" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Desktop backdrop -->
+  <rect width="960" height="620" fill="url(#bg)"/>
+  <rect x="0" y="0" width="960" height="40" fill="#cdd5e1"/>
+  <circle cx="900" cy="20" r="8" fill="#ffb13d"/>
+  <circle cx="870" cy="20" r="8" fill="#4caf50"/>
+  <circle cx="840" cy="20" r="8" fill="#f25f5f"/>
+
+  <!-- App window -->
+  <g filter="url(#soft)">
+    <rect x="120" y="70" width="720" height="500" rx="16" fill="#ffffff"/>
+    <!-- title bar -->
+    <rect x="120" y="70" width="720" height="48" rx="16" fill="#fafbfd"/>
+    <rect x="120" y="102" width="720" height="16" fill="#fafbfd"/>
+    <circle cx="150" cy="94" r="7" fill="#f25f5f"/>
+    <circle cx="172" cy="94" r="7" fill="#ffb13d"/>
+    <circle cx="194" cy="94" r="7" fill="#4caf50"/>
+    <text x="230" y="100" font-size="18" font-weight="600" fill="#1f2330">角落搭子 · 设置</text>
+
+    <!-- Left: photo -->
+    <text x="150" y="155" font-size="15" font-weight="600" fill="#1f2330">宠物照片</text>
+    <rect x="150" y="170" width="300" height="170" rx="12" fill="#f3f5f9" stroke="#dde3ec"/>
+    <!-- simple cat illustration -->
+    <g transform="translate(300,255)">
+      <ellipse cx="0" cy="20" rx="55" ry="42" fill="#ffb066"/>
+      <polygon points="-38,-18 -20,-48 -6,-20" fill="#ffb066"/>
+      <polygon points="38,-18 20,-48 6,-20" fill="#ffb066"/>
+      <circle cx="-18" cy="6" r="6" fill="#3a2b1f"/>
+      <circle cx="18" cy="6" r="6" fill="#3a2b1f"/>
+      <circle cx="-20" cy="4" r="2" fill="#fff"/>
+      <circle cx="16" cy="4" r="2" fill="#fff"/>
+      <path d="M-6,22 Q0,28 6,22" stroke="#3a2b1f" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="-30" cy="18" r="6" fill="#ff8aa0" opacity="0.6"/>
+      <circle cx="30" cy="18" r="6" fill="#ff8aa0" opacity="0.6"/>
+    </g>
+    <rect x="180" y="300" width="120" height="30" rx="8" fill="url(#accent)"/>
+    <text x="240" y="320" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="600">选择照片</text>
+
+    <!-- Right: API key -->
+    <text x="480" y="155" font-size="15" font-weight="600" fill="#1f2330">Agnes 视频 API Key</text>
+    <rect x="480" y="170" width="320" height="40" rx="8" fill="#f3f5f9" stroke="#dde3ec"/>
+    <text x="498" y="195" font-size="14" fill="#8a90a2">••••••••••••••••••••••••</text>
+    <rect x="700" y="170" width="100" height="40" rx="8" fill="#2f7df6"/>
+    <text x="750" y="195" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="600">测试连接</text>
+    <text x="480" y="232" font-size="12" fill="#2bb673">✓ 连接成功 · agnes-video-v2.0</text>
+
+    <!-- Action grid -->
+    <text x="480" y="270" font-size="15" font-weight="600" fill="#1f2330">动作生成（15）</text>
+    <g font-size="12" fill="#1f2330">
+      <!-- generated chips -->
+      <rect x="480" y="285" width="92" height="30" rx="15" fill="#e7f7ee" stroke="#2bb673"/>
+      <text x="526" y="304" text-anchor="middle" fill="#1f7a4d">待机 ✓</text>
+      <rect x="584" y="285" width="92" height="30" rx="15" fill="#e7f7ee" stroke="#2bb673"/>
+      <text x="630" y="304" text-anchor="middle" fill="#1f7a4d">被摸 ✓</text>
+      <rect x="688" y="285" width="92" height="30" rx="15" fill="#e7f7ee" stroke="#2bb673"/>
+      <text x="734" y="304" text-anchor="middle" fill="#1f7a4d">打字 ✓</text>
+
+      <rect x="480" y="323" width="92" height="30" rx="15" fill="#e7f7ee" stroke="#2bb673"/>
+      <text x="526" y="342" text-anchor="middle" fill="#1f7a4d">挥手 ✓</text>
+      <rect x="584" y="323" width="92" height="30" rx="15" fill="#fff4e6" stroke="#ff8a3d"/>
+      <text x="630" y="342" text-anchor="middle" fill="#c2641a">伸懒腰 …</text>
+      <rect x="688" y="323" width="92" height="30" rx="15" fill="#f3f5f9" stroke="#dde3ec"/>
+      <text x="734" y="342" text-anchor="middle" fill="#8a90a2">跳舞</text>
+
+      <rect x="480" y="361" width="92" height="30" rx="15" fill="#f3f5f9" stroke="#dde3ec"/>
+      <text x="526" y="380" text-anchor="middle" fill="#8a90a2">庆祝</text>
+      <rect x="584" y="361" width="92" height="30" rx="15" fill="#f3f5f9" stroke="#dde3ec"/>
+      <text x="630" y="380" text-anchor="middle" fill="#8a90a2">睡觉</text>
+      <rect x="688" y="361" width="92" height="30" rx="15" fill="#f3f5f9" stroke="#dde3ec"/>
+      <text x="734" y="380" text-anchor="middle" fill="#8a90a2">吃点心</text>
+    </g>
+
+    <!-- footer button -->
+    <rect x="480" y="430" width="300" height="44" rx="10" fill="url(#accent)"/>
+    <text x="630" y="458" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="700">生成 15 段动作视频</text>
+
+    <!-- hint -->
+    <text x="150" y="470" font-size="12" fill="#8a90a2">提示：日常运行完全离线，仅生成时联网。</text>
+  </g>
+</svg>
