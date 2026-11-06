@@ -667,21 +667,29 @@
   <div class="wrap">
     <div class="section-label"><span>03 / THE PLAYGROUND</span><span>LESS TALK. MORE INTERACTION.</span></div>
     <div class="sec-head lab-heading"><h2>别只看，<br><em>亲手试试看。</em></h2><p><span class="live-dot" aria-hidden="true"></span> 无需安装，直接体验。<br><span class="lab-disclaimer">以下为本地交互演示，不调用真实 AI 服务。</span></p></div>
-    <div class="play-tabs" id="playTabs">
-      <button class="ptab active" data-p="workbench">综合工作台</button>
-      <button class="ptab" data-p="kg">企业知识库</button>
-      <button class="ptab" data-p="amazon">Amazon OS</button>
-      <button class="ptab" data-p="gongkao">公考私教</button>
-      <button class="ptab" data-p="style">颜搭AI</button>
-      <button class="ptab" data-p="corner">角落搭子</button>
-      <button class="ptab" data-p="duel">命运对决</button>
-      <button class="ptab" data-p="video">视频学习助手</button>
+    <div class="play-tabs" id="playTabs" role="tablist" aria-label="交互演示">
+      <button class="ptab active" id="ptab-workbench" type="button" role="tab" aria-selected="true" aria-controls="panel-workbench" data-p="workbench"><i class="ptab-n" aria-hidden="true">01</i>综合工作台</button>
+      <button class="ptab" id="ptab-kg" type="button" role="tab" aria-selected="false" aria-controls="panel-kg" tabindex="-1" data-p="kg"><i class="ptab-n" aria-hidden="true">02</i>企业知识库</button>
+      <button class="ptab" id="ptab-amazon" type="button" role="tab" aria-selected="false" aria-controls="panel-amazon" tabindex="-1" data-p="amazon"><i class="ptab-n" aria-hidden="true">03</i>Amazon OS</button>
+      <button class="ptab" id="ptab-gongkao" type="button" role="tab" aria-selected="false" aria-controls="panel-gongkao" tabindex="-1" data-p="gongkao"><i class="ptab-n" aria-hidden="true">04</i>公考私教</button>
+      <button class="ptab" id="ptab-style" type="button" role="tab" aria-selected="false" aria-controls="panel-style" tabindex="-1" data-p="style"><i class="ptab-n" aria-hidden="true">05</i>颜搭AI</button>
+      <button class="ptab" id="ptab-corner" type="button" role="tab" aria-selected="false" aria-controls="panel-corner" tabindex="-1" data-p="corner"><i class="ptab-n" aria-hidden="true">06</i>角落搭子</button>
+      <button class="ptab" id="ptab-duel" type="button" role="tab" aria-selected="false" aria-controls="panel-duel" tabindex="-1" data-p="duel"><i class="ptab-n" aria-hidden="true">07</i>命运对决</button>
+      <button class="ptab" id="ptab-video" type="button" role="tab" aria-selected="false" aria-controls="panel-video" tabindex="-1" data-p="video"><i class="ptab-n" aria-hidden="true">08</i>视频学习助手</button>
+    </div>
+    <div class="play-guide" role="group" aria-label="面试推荐路径">
+      <span class="pg-label">面试推荐路径</span>
+      <button class="pg-step" type="button" data-jump="kg">① 可溯源 RAG</button>
+      <button class="pg-step" type="button" data-jump="amazon">② Agent 编排</button>
+      <button class="pg-step" type="button" data-jump="corner">③ 端侧应用</button>
+      <span class="pg-hint">点击直达 · ← → 键切换 · 每屏可单独重置</span>
     </div>
 
     <div class="play-stage">
 
       <!-- 1 综合工作台 -->
-      <div class="panel active" data-panel="workbench">
+      <div class="panel active" data-panel="workbench" id="panel-workbench" role="tabpanel" aria-labelledby="ptab-workbench" tabindex="0">
+        <div class="panel-tools"><span class="panel-tag">01 / 综合工作台 · 审批留痕</span><button class="panel-reset" type="button" data-reset="workbench">↺ 重置本演示</button></div>
         <div class="panel-grid">
           <div class="panel-intro">
             <h4>综合管理工作台</h4>
@@ -691,18 +699,20 @@
           </div>
           <div class="demo-card">
             <div class="demo-head">审批中心 <span style="font-size:var(--fs-1);color:var(--muted);font-weight:600">待办 → 已批 / 驳回</span></div>
-            <div class="tabs2" id="wbTabs2">
-              <button class="t2 active" data-s="todo">待审</button>
-              <button class="t2" data-s="done">已批</button>
-              <button class="t2" data-s="reject">驳回</button>
+            <div class="tabs2" id="wbTabs2" role="group" aria-label="审批状态">
+              <button class="t2 active" type="button" data-s="todo" aria-pressed="true">待审 <b class="cnt" data-cnt="todo">3</b></button>
+              <button class="t2" type="button" data-s="done" aria-pressed="false">已批 <b class="cnt" data-cnt="done">0</b></button>
+              <button class="t2" type="button" data-s="reject" aria-pressed="false">驳回 <b class="cnt" data-cnt="reject">0</b></button>
             </div>
-            <ul class="req-list" id="wbList"></ul>
+            <ul class="req-list" id="wbList" aria-live="polite"></ul>
+            <div class="wb-bar"><button class="undo-btn" id="wbUndo" type="button" disabled>↶ 撤销上一步</button><span class="wb-hint" id="wbHint"></span></div>
           </div>
         </div>
       </div>
 
       <!-- 2 企业知识库 -->
-      <div class="panel" data-panel="kg">
+      <div class="panel" data-panel="kg" id="panel-kg" role="tabpanel" aria-labelledby="ptab-kg" tabindex="0">
+        <div class="panel-tools"><span class="panel-tag">02 / 企业知识库 · 双路召回可溯源</span><button class="panel-reset" type="button" data-reset="kg">↺ 重置本演示</button></div>
         <div class="panel-grid">
           <div class="panel-intro">
             <h4>企业知识库</h4>
@@ -718,14 +728,16 @@
               <button class="kchip" data-q="项目部采购流程怎么走？">采购流程</button>
               <button class="kchip" data-q="绩效奖金一般怎么核算？">绩效奖金</button>
             </div>
-            <div class="kg-ans" id="kgAns">输入问题后点击检索，将模拟向量 + 图谱双路召回并给出带引用的答案。</div>
-            <div class="kg-src" id="kgSrc"></div>
+            <div class="kg-ans" id="kgAns" aria-live="polite">输入问题后点击检索，将模拟向量 + 图谱双路召回并给出带引用的答案。</div>
+            <div class="kg-src" id="kgSrc" aria-live="polite"></div>
+            <div class="kg-meta" id="kgMeta" aria-live="polite"></div>
           </div>
         </div>
       </div>
 
       <!-- 3 Amazon OS -->
-      <div class="panel" data-panel="amazon">
+      <div class="panel" data-panel="amazon" id="panel-amazon" role="tabpanel" aria-labelledby="ptab-amazon" tabindex="0">
+        <div class="panel-tools"><span class="panel-tag">03 / Amazon OS · 多技能编排</span><button class="panel-reset" type="button" data-reset="amazon">↺ 重置本演示</button></div>
         <div class="panel-grid">
           <div class="panel-intro">
             <h4>Amazon AI Growth OS</h4>
@@ -741,7 +753,9 @@
               <button class="kchip" data-q="瑜伽垫">瑜伽垫</button>
               <button class="kchip" data-q="B0C1234567">B0C1234567</button>
             </div>
-            <div class="amz-log" id="amzLog"></div>
+            <div class="amz-log" id="amzLog" role="log" aria-live="polite"></div>
+            <div class="amz-prog" aria-hidden="true"><i id="amzBar"></i></div>
+            <div class="amz-meta" id="amzMeta">口径：分数与 FBA 费用按输入确定性计算，同一输入结果固定，不调用真实 API。</div>
             <div class="amz-report" id="amzReport" style="display:none">
               <div class="amz-box"><div class="t">选品机会评分</div><div class="v" id="amzScore">—</div></div>
               <div class="amz-box"><div class="t">建议核心关键词</div><div class="v" id="amzKw" style="font-size:var(--fs-2)">—</div></div>
@@ -753,7 +767,8 @@
       </div>
 
       <!-- 4 公考私教 -->
-      <div class="panel" data-panel="gongkao">
+      <div class="panel" data-panel="gongkao" id="panel-gongkao" role="tabpanel" aria-labelledby="ptab-gongkao" tabindex="0">
+        <div class="panel-tools"><span class="panel-tag">04 / 公考私教 · 分镜式讲解</span><button class="panel-reset" type="button" data-reset="gongkao">↺ 重置本演示</button></div>
         <div class="panel-grid">
           <div class="panel-intro">
             <h4>公考私教 gongkao-ai</h4>
@@ -764,10 +779,10 @@
           <div class="demo-card">
             <div class="demo-head">行测，AI 私教讲解</div>
             <div class="gk-q">【常识】下列哪种情形属于《民法典》规定的不可抗力？</div>
-            <button class="gk-opt" data-correct="1">A. 商家因疫情封控无法按期发货</button>
-            <button class="gk-opt" data-correct="0">B. 甲因疏忽大意忘记履行合同</button>
-            <button class="gk-opt" data-correct="0">C. 乙因个人原因临时毁约</button>
-            <button class="gk-opt" data-correct="0">D. 丙为抬高价格拒绝供货</button>
+            <button class="gk-opt" type="button" data-correct="1" data-kbd="1">A. 商家因疫情封控无法按期发货</button>
+            <button class="gk-opt" type="button" data-correct="0" data-kbd="2">B. 甲因疏忽大意忘记履行合同</button>
+            <button class="gk-opt" type="button" data-correct="0" data-kbd="3">C. 乙因个人原因临时毁约</button>
+            <button class="gk-opt" type="button" data-correct="0" data-kbd="4">D. 丙为抬高价格拒绝供货</button>
             <div class="gk-panel" id="gkPanel">
               <div class="ttl">私教思路分镜</div>
               <div class="gk-strip">
@@ -775,14 +790,16 @@
                 <div class="gk-frame"><span class="n">② 排除过错</span>B/C/D 都是人为可控或主观违约，不属于客观不能</div>
                 <div class="gk-frame"><span class="n">③ 锁定答案</span>疫情封控属典型不可抗力，选 A</div>
               </div>
-              <div style="margin-top:10px;font-size:var(--fs-2);line-height:1.6">解析：不可抗力须为客观、外部、不可归责于当事人的事件；疫情政府封控正合此定义，商家可依法免责或延期。</div>
+              <div class="gk-why" id="gkWhy" hidden></div>
+              <div class="gk-explain" id="gkExplain">解析：不可抗力须为客观、外部、不可归责于当事人的事件；疫情政府封控正合此定义，商家可依法免责或延期。</div>
+              <div class="gk-actions"><button class="gk-btn" id="gkNext" type="button" disabled>下一步 ▸</button><button class="gk-btn ghost" id="gkRetry" type="button" hidden>再答一次</button></div>
             </div>
           </div>
         </div>
       </div>
-
       <!-- 5 颜搭 AI -->
-      <div class="panel" data-panel="style">
+      <div class="panel" data-panel="style" id="panel-style" role="tabpanel" aria-labelledby="ptab-style" tabindex="0">
+        <div class="panel-tools"><span class="panel-tag">05 / 颜搭 AI · 变量插槽即时预览</span><button class="panel-reset" type="button" data-reset="style">↺ 重置本演示</button></div>
         <div class="panel-grid">
           <div class="panel-intro">
             <h4>颜搭 AI style-prompt-ui</h4>
@@ -796,14 +813,15 @@
             <div class="style-slot"><label>风格</label><select id="stStyle"><option>简约高级</option><option>韩系温柔</option><option>法式慵懒</option><option>新中式</option><option>运动机能</option></select></div>
             <div class="style-slot"><label>体型优化</label><select id="stBody"><option>显高显瘦</option><option>修饰肩线</option><option>拉长腿比</option><option>遮肉显轻盈</option></select></div>
             <div class="style-slot"><label>季节 / 预算</label><select id="stSeason"><option>春秋，中等预算</option><option>夏季，轻薄透气</option><option>冬季，保暖质感</option><option>不限预算，高级感</option></select></div>
-            <div class="prompt-out" id="stOut"></div>
-            <button class="copy-btn" id="stCopy">复制提示词</button>
+            <div class="prompt-out" id="stOut" aria-live="polite"></div>
+            <div class="prompt-meta"><span class="prompt-len" id="stLen">0 字</span><button class="copy-btn" id="stCopy" type="button">复制提示词</button></div>
           </div>
         </div>
       </div>
 
       <!-- 6 角落搭子 -->
-      <div class="panel" data-panel="corner">
+      <div class="panel" data-panel="corner" id="panel-corner" role="tabpanel" aria-labelledby="ptab-corner" tabindex="0">
+        <div class="panel-tools"><span class="panel-tag">06 / 角落搭子 · 动作状态机</span><button class="panel-reset" type="button" data-reset="corner">↺ 重置本演示</button></div>
         <div class="panel-grid">
           <div class="panel-intro">
             <h4>角落搭子 corner-buddy</h4>
@@ -813,20 +831,22 @@
           </div>
           <div class="demo-card">
             <div class="demo-head">桌面宠物预览</div>
-            <div class="pet-win"><div class="pet" id="pet">🐱</div></div>
-            <div class="pet-status" id="petStatus">状态：安静待机中</div>
+            <div class="pet-win" data-mood="idle"><div class="pet" id="pet" data-mood="idle" aria-hidden="true">🐱</div></div>
+            <div class="pet-status" id="petStatus" aria-live="polite">状态：安静待机中</div>
             <div class="pet-btns">
-              <button data-a="idle">待机</button>
-              <button data-a="pat">摸摸头</button>
-              <button data-a="dance">跳舞</button>
-              <button data-a="sleep">睡觉</button>
+              <button type="button" data-a="idle">待机</button>
+              <button type="button" data-a="pat">摸摸头</button>
+              <button type="button" data-a="dance">跳舞</button>
+              <button type="button" data-a="sleep">睡觉</button>
             </div>
+            <div class="pet-note">网页为简化预览：真实客户端用 FFmpeg 生成 15 段动作视频，这里的 4 种动作由 CSS 动画模拟。</div>
           </div>
         </div>
       </div>
 
       <!-- 7 命运对决 -->
-      <div class="panel" data-panel="duel">
+      <div class="panel" data-panel="duel" id="panel-duel" role="tabpanel" aria-labelledby="ptab-duel" tabindex="0">
+        <div class="panel-tools"><span class="panel-tag">07 / 命运对决 · 回合制结算</span><button class="panel-reset" type="button" data-reset="duel">↺ 重置本演示</button></div>
         <div class="panel-grid">
           <div class="panel-intro">
             <h4>命运对决 Destiny Duel</h4>
@@ -836,16 +856,26 @@
           </div>
           <div class="demo-card">
             <div class="demo-head">迷你对战（你 vs 脚本 AI）</div>
-            <div class="duel-row"><span class="who">你</span><div class="duel-bar me"><i id="lpMe" style="width:100%"></i></div></div>
-            <div class="duel-row"><span class="who">AI</span><div class="duel-bar foe"><i id="lpFoe" style="width:100%"></i></div></div>
-            <div class="duel-log" id="duelLog">点击召唤怪兽开始对战。每回合你召唤攻击，AI 也会反击。</div>
-            <button class="btn-run" id="duelBtn">召唤怪兽</button>
+            <div class="duel-scene">
+              <div class="duel-card" id="duelCard" data-face="back" aria-hidden="true">
+                <span class="dc-face dc-back">?</span>
+                <span class="dc-face dc-front">🐉</span>
+              </div>
+              <div class="duel-side">
+                <div class="duel-row"><span class="who">你</span><div class="duel-bar me"><i id="lpMe" style="width:100%"></i></div><b class="lp" id="lpMeNum">8000</b></div>
+                <div class="duel-row"><span class="who">AI</span><div class="duel-bar foe"><i id="lpFoe" style="width:100%"></i></div><b class="lp" id="lpFoeNum">8000</b></div>
+                <div class="duel-meta"><span id="duelRound">第 1 回合</span><span id="duelTurn">你的回合</span></div>
+              </div>
+            </div>
+            <div class="duel-log" id="duelLog" role="log" aria-live="polite">点击召唤怪兽开始对战。每回合你召唤攻击，AI 也会反击。</div>
+            <div class="duel-actions"><button class="btn-run" id="duelBtn" type="button">召唤怪兽</button><button class="duel-reset" id="duelReset" type="button">↺ 重开一局</button></div>
           </div>
         </div>
       </div>
 
       <!-- 8 视频学习助手 -->
-      <div class="panel" data-panel="video">
+      <div class="panel" data-panel="video" id="panel-video" role="tabpanel" aria-labelledby="ptab-video" tabindex="0">
+        <div class="panel-tools"><span class="panel-tag">08 / 视频学习助手 · 按进度分段</span><button class="panel-reset" type="button" data-reset="video">↺ 重置本演示</button></div>
         <div class="panel-grid">
           <div class="panel-intro">
             <h4>视频学习助手</h4>
@@ -855,8 +885,10 @@
           </div>
           <div class="demo-card">
             <div class="demo-head">自动生成学习笔记</div>
-            <div class="vid-in"><input id="vidInput" value="https://www.bilibili.com/video/BV1xx411c7mD" /><button class="btn-run" id="vidRun">生成笔记</button></div>
-            <ul class="note-tl" id="vidNotes"><li class="note"><span class="ts">00:00</span><div class="nt">粘贴视频链接后点击生成笔记，扩展会按真实播放进度自动分段。<span class="ns">演示数据</span></div></li></ul>
+            <div class="vid-in"><input id="vidInput" value="https://www.bilibili.com/video/BV1xx411c7mD" /><button class="btn-run" id="vidRun" type="button">生成笔记</button></div>
+            <div class="vid-progress" aria-hidden="true"><i id="vidBar"></i></div>
+            <div class="vid-meta"><span id="vidClock">00:00 / 03:10</span><button class="vid-copy" id="vidCopyAll" type="button" hidden>复制全部笔记</button></div>
+            <ul class="note-tl" id="vidNotes" aria-live="polite"><li class="note"><span class="ts">00:00</span><div class="nt">粘贴视频链接后点击生成笔记，扩展会按真实播放进度自动分段。<span class="ns">演示数据</span></div></li></ul>
           </div>
         </div>
       </div>
@@ -1163,191 +1195,6 @@
     const idx=+b.dataset.q;if(!isNaN(idx))askFAQ(idx);
   });
 </script>
-<script>
-
-// ===== Playground =====
-(function(){
-  // 标签切换
-  var tabs=document.querySelectorAll('#playTabs .ptab');
-  var panels=document.querySelectorAll('.panel');
-  tabs.forEach(function(t){t.addEventListener('click',function(){
-    tabs.forEach(function(x){x.classList.remove('active')});
-    panels.forEach(function(p){p.classList.remove('active')});
-    t.classList.add('active');
-    var p=document.querySelector('.panel[data-panel="'+t.dataset.p+'"]');
-    if(p)p.classList.add('active');
-  });});
-
-  // 1 综合工作台审批
-  var wbTodo=[{t:'请假审批',n:'张伟，事假 2 天',d:'2026-10-20~21'},
-              {t:'公章使用',n:'合同用印 HT-2026-118',d:'法务已预审'},
-              {t:'公务接待',n:'客户来访用餐',d:'预算 ¥680'}];
-  var wbDone=[],wbRej=[];
-  var wbList=document.getElementById('wbList');
-  function renderWB(){
-    var cur=document.querySelector('#wbTabs2 .t2.active').dataset.s;
-    var arr=cur==='todo'?wbTodo:cur==='done'?wbDone:wbRej;
-    wbList.innerHTML='';
-    if(!arr.length){wbList.innerHTML='<div style="color:var(--muted);font-size:var(--fs-2);padding:12px">该状态暂无记录</div>';return;}
-    arr.forEach(function(r,i){
-      var li=document.createElement('li');
-      li.className='req'+(cur!=='todo'?(cur==='done'?' done':' rej'):'');
-      var right=cur==='todo'?'<div class="ra"><button class="mini ok" data-i="'+i+'" data-a="done">批准</button><button class="mini no" data-i="'+i+'" data-a="reject">驳回</button></div>':'';
-      li.innerHTML='<div><div class="ri">'+r.t+'</div><div class="rm">'+r.n+' '+r.d+'</div></div>'+right;
-      wbList.appendChild(li);
-    });
-    if(cur==='todo'){
-      wbList.querySelectorAll('.mini').forEach(function(b){
-        b.addEventListener('click',function(){
-          var i=+b.dataset.i,a=b.dataset.a,r=wbTodo.splice(i,1)[0];
-          (a==='done'?wbDone:wbRej).push(r);renderWB();
-        });
-      });
-    }
-  }
-  document.querySelectorAll('#wbTabs2 .t2').forEach(function(b){b.addEventListener('click',function(){
-    document.querySelectorAll('#wbTabs2 .t2').forEach(function(x){x.classList.remove('active')});
-    b.classList.add('active');renderWB();
-  });});
-  renderWB();
-
-  // 2 企业知识库问答
-  var kgBase={
-    '党员组织关系转接需要哪些材料？':'党员组织关系转接一般需：① 组织关系介绍信（原党委开具）；② 党员档案 / 入党志愿书复印件；③ 本人身份证；④ 接收地党支部同意接收证明。转入后 30 日内完成落到支部的登记。',
-    '项目部采购流程怎么走？':'项目部采购通常：需求提报 → 比价 / 招标 → 合同审批 → 验收入库 → 付款。单笔超授权额度须上报公司集采或分管领导审批，留存比价与验收记录备查。',
-    '绩效奖金一般怎么核算？':'绩效奖金多按「基数 × 考核系数」核算：基数挂钩岗位职级与月度产值，系数来自 KPI / 360 考评。项目奖常按节点达成比例分段发放，延期或质量不达标会相应扣减。'
-  };
-  var kgSrcMap={
-    '党员组织关系转接需要哪些材料？':['《中国共产党党员教育管理工作条例》第三章','支部工作手册，组织关系转接','公司党建标准化台账，样例'],
-    '项目部采购流程怎么走？':['《项目部采购管理办法》第 4 条','公司集采授权清单 2026','合同审批单模板'],
-    '绩效奖金一般怎么核算？':['《薪酬与绩效管理制度》附件 2','2025 年度考核结果公示','项目节点奖发放细则']
-  };
-  var kgAns=document.getElementById('kgAns'),kgSrc=document.getElementById('kgSrc'),kgInput=document.getElementById('kgInput');
-  function runKG(q){
-    if(!q)return;
-    kgAns.innerHTML='<span style="color:var(--accent-strong);font-weight:800">检索中</span> 向量召回 + 图谱路径重排（双路混合）';
-    kgSrc.innerHTML='';
-    setTimeout(function(){
-      var ans=kgBase[q]||'已在知识库检索到相关条目。示例答案：该问题对应制度条款已归集，系统会返回带引用编号的要点，并标注来源文件与章节，确保答案可溯源、可复核。';
-      var src=kgSrcMap[q]||['相关制度文件，条目','知识图谱关系路径','历史问答记录'];
-      kgAns.innerHTML=ans+' <span class="cite">[1][2][3]</span>';
-      kgSrc.innerHTML='引用来源：'+src.map(function(s){return '<span>'+s+'</span>'}).join('');
-    },620);
-  }
-  document.getElementById('kgRun').addEventListener('click',function(){runKG(kgInput.value.trim());});
-  kgInput.addEventListener('keydown',function(e){if(e.key==='Enter')runKG(kgInput.value.trim());});
-  document.querySelectorAll('[data-panel="kg"] .kchip').forEach(function(c){c.addEventListener('click',function(){var q=c.dataset.q;kgInput.value=q;runKG(q);});});
-
-  // 3 Amazon Agent 调度
-  var amzLog=document.getElementById('amzLog'),amzReport=document.getElementById('amzReport'),amzInput=document.getElementById('amzInput');
-  var amzSkills=['amazon-one-shot，深度调研','amazon-keyword-research，关键词挖掘','amazon-listing-optimization，Listing 优化','amazon-fba-calculator，FBA 费用','amazon-ppc-campaign，PPC 广告','amazon-sales-estimator，销量估算','tariff-calculator-amazon，关税'];
-  function runAMZ(q){
-    if(!q)return;
-    amzReport.style.display='none';amzLog.innerHTML='';
-    var steps=['▶ 接收指令：'+q,'▶ 初始化 Claude Agent SDK MessageQueue'];
-    var i=0;
-    function step(){
-      if(i<steps.length){amzLog.innerHTML+='<div>'+steps[i]+'</div>';i++;setTimeout(step,260);return;}
-      if(amzSkillIdx<amzSkills.length){
-        amzLog.innerHTML+='<div class="ok">✓ 调度 '+amzSkills[amzSkillIdx]+'</div>';amzSkillIdx++;setTimeout(step,300);return;
-      }
-      amzLog.innerHTML+='<div class="hl">✓ 56 个亚马逊技能就绪，正在汇总报告</div>';
-      var score=(78+Math.floor(Math.random()*14))+' / 100';
-      var kw=['wireless earbuds','noise cancelling','long battery','gift 2026'].slice(0,2+Math.floor(Math.random()*2)).join('，');
-      var fba='$'+(2.1+Math.random()*1.5).toFixed(2);
-      document.getElementById('amzScore').textContent=score;
-      document.getElementById('amzKw').textContent=kw;
-      document.getElementById('amzFba').textContent=fba;
-      document.getElementById('amzRisk').textContent='类目竞争激烈，建议先做长尾词 + 差评点优化';
-      amzReport.style.display='grid';
-      amzLog.scrollTop=amzLog.scrollHeight;
-    }
-    var amzSkillIdx=0;step();
-  }
-  document.getElementById('amzRun').addEventListener('click',function(){runAMZ(amzInput.value.trim());});
-  amzInput.addEventListener('keydown',function(e){if(e.key==='Enter')runAMZ(amzInput.value.trim());});
-  document.querySelectorAll('[data-panel="amazon"] .kchip').forEach(function(c){c.addEventListener('click',function(){var q=c.dataset.q;amzInput.value=q;runAMZ(q);});});
-
-  // 4 公考私教答题
-  document.querySelectorAll('[data-panel="gongkao"] .gk-opt').forEach(function(o){
-    o.addEventListener('click',function(){
-      if(document.getElementById('gkPanel').classList.contains('show'))return;
-      var correct=(o.dataset.correct==='1');
-      document.querySelectorAll('[data-panel="gongkao"] .gk-opt').forEach(function(x){
-        if(x.dataset.correct==='1')x.classList.add('correct');
-      });
-      if(!correct)o.classList.add('wrong');
-      document.getElementById('gkPanel').classList.add('show');
-    });
-  });
-
-  // 5 颜搭提示词
-  function buildPrompt(){
-    var s=document.getElementById('stScene').value,st=document.getElementById('stStyle').value,
-        b=document.getElementById('stBody').value,se=document.getElementById('stSeason').value;
-    return '为一位亚洲女生生成一组'+s+'形象方案，整体风格：'+st+'。\n'+
-           '穿搭要求：'+b+'，'+se+'。\n'+
-           '画面：自然光、真实质感、全身构图、背景干净不抢主体；\n'+
-           '色彩协调、细节精致，突出高级感与亲和力。';
-  }
-  function refreshPrompt(){document.getElementById('stOut').textContent=buildPrompt();}
-  ['stScene','stStyle','stBody','stSeason'].forEach(function(id){document.getElementById(id).addEventListener('change',refreshPrompt);});
-  refreshPrompt();
-  document.getElementById('stCopy').addEventListener('click',function(){
-    var t=document.getElementById('stOut').textContent;
-    if(navigator.clipboard)navigator.clipboard.writeText(t);
-    var b=this;b.textContent='✓ 已复制';setTimeout(function(){b.textContent='复制提示词';},1400);
-  });
-
-  // 6 角落搭子
-  var pet=document.getElementById('pet'),petStatus=document.getElementById('petStatus');
-  var petState={idle:'安静待机中',pat:'被你摸头，眯眼摇尾巴',dance:'跟着节奏蹦蹦跳跳',sleep:'蜷起来睡着了'};
-  document.querySelectorAll('[data-panel="corner"] .pet-btns button').forEach(function(b){
-    b.addEventListener('click',function(){
-      var a=b.dataset.a;pet.textContent=a==='sleep'?'😴':a==='dance'?'🐱':'🐱';petStatus.textContent='状态：'+petState[a];
-    });
-  });
-
-  // 7 命运对决
-  var lpMe=100,lpFoe=100,duelOver=false;
-  var duelLog=document.getElementById('duelLog');
-  document.getElementById('duelBtn').addEventListener('click',function(){
-    if(duelOver)return;
-    var dmg=600+Math.floor(Math.random()*500);
-    lpFoe=Math.max(0,lpFoe-dmg);
-    duelLog.innerHTML+='<div>⚔️ 你召唤青眼白龙攻击，造成 '+dmg+' 伤害！</div>';
-    document.getElementById('lpFoe').style.width=lpFoe+'%';
-    if(lpFoe<=0){duelLog.innerHTML+='<div style="color:var(--green-9);font-weight:800">🏆 你击败了脚本 AI，获胜！</div>';duelOver=true;return;}
-    var rdmg=400+Math.floor(Math.random()*500);
-    lpMe=Math.max(0,lpMe-rdmg);
-    setTimeout(function(){
-      duelLog.innerHTML+='<div>🤖 AI 反击，对你造成 '+rdmg+' 伤害。</div>';
-      document.getElementById('lpMe').style.width=lpMe+'%';
-      if(lpMe<=0){duelLog.innerHTML+='<div style="color:var(--red-9);font-weight:800">💀 你被 AI 击败，再试一次？</div>';duelOver=true;}
-      duelLog.scrollTop=duelLog.scrollHeight;
-    },360);
-  });
-
-  // 8 视频学习助手
-  var vidNotes=document.getElementById('vidNotes');
-  var demoNotes=[
-    {ts:'00:30',nt:'本节介绍项目背景与目标',ns:'字幕原文：今天我们来看这个开源项目的整体架构'},
-    {ts:'01:05',nt:'核心模块一：状态管理如何组织',ns:'字幕原文：这里用 reducer 把对战状态收口'},
-    {ts:'01:48',nt:'核心模块二：脚本 AI 的决策逻辑',ns:'字幕原文：AI 会在每回合评估手牌优劣'},
-    {ts:'02:33',nt:'小结与可复用思路',ns:'字幕原文：关键是把规则做成可测试的数据'}
-  ];
-  document.getElementById('vidRun').addEventListener('click',function(){
-    vidNotes.innerHTML='';
-    var i=0;
-    (function add(){
-      if(i>=demoNotes.length)return;
-      var n=demoNotes[i];
-      vidNotes.innerHTML+='<li class="note"><span class="ts">'+n.ts+'</span><div class="nt">'+n.nt+'<span class="ns">'+n.ns+'</span></div></li>';
-      i++;setTimeout(add,360);
-    })();
-  });
-})();
-
-</script>
+<script src="playground.js" defer></script>
 </body>
 </html>
