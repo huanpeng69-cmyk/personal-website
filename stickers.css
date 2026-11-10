@@ -98,8 +98,9 @@
 .site-sticker.is-unavailable .sticker-image { display: none; }
 .site-sticker.is-unavailable .sticker-art { animation: none; }
 
-/* The original hero objects keep their coordinates. The sticker uses the gap. */
-.sticker-home { --sticker-size: clamp(60px, 7vw, 110px); position: absolute; left: 35%; bottom: 20%; z-index: 4; }
+/* Larger welcome sticker replaces only the old top-left hero portrait. */
+.sticker-home { --sticker-size: clamp(150px, 15vw, 224px); position: absolute; left: 4%; top: 10%; bottom: auto; z-index: 4; }
+.sticker-home .sticker-feedback { left: calc(100% + 8px); right: auto; top: 8px; bottom: auto; }
 .sticker-title-row { display: flex; align-items: center; gap: 24px; min-width: 0; }
 .sticker-title-row > h2 { min-width: 0; }
 .work-heading .sticker-title-row { justify-content: center; }
@@ -126,13 +127,17 @@
 @keyframes sticker-jump { 0%,100% { transform: translateY(0) scale(1); } 18% { transform: translateY(3px) scale(1.03,.95); } 42% { transform: translateY(-15px) rotate(-5deg); } 65% { transform: translateY(0) scale(1.04,.96); } 82% { transform: translateY(-6px) rotate(3deg); } }
 @keyframes sticker-think { 0%,100% { transform: rotate(0); } 30% { transform: rotate(-11deg) translateY(-3px); } 65% { transform: rotate(7deg); } }
 @keyframes sticker-heart { 0%,100% { transform: scale(1); } 25%,65% { transform: scale(1.12); } 45%,85% { transform: scale(1.02); } }
+@media (min-width: 721px) and (max-height: 800px) {
+  .sticker-home { --sticker-size: clamp(100px, 12vw, 180px); top: 9%; }
+}
 
 @media (max-width: 1100px) {
   .contact-sticker-group { gap: 18px; }
   .contact-sticker-group .site-sticker { --sticker-size: 94px; }
+  .sticker-home { --sticker-size: clamp(108px, 14vw, 154px); left: 3%; top: 9%; }
 }
 @media (max-width: 720px) {
-  .sticker-home { --sticker-size: clamp(46px, 14vw, 74px); left: 44%; bottom: 18%; }
+  .sticker-home { --sticker-size: clamp(96px, 28vw, 112px); left: 7%; top: 7%; bottom: auto; }
   .sticker-home .sticker-caption { font-size: 11px; padding: 4px 6px; }
   .sticker-home[data-ready="true"] .sticker-caption::before { content: none; }
   .sticker-title-row { gap: 12px; }
