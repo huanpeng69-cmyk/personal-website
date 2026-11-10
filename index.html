@@ -338,8 +338,10 @@
   }
 </style>
 <link rel="stylesheet" href="portfolio.css" />
+<link rel="stylesheet" href="stickers.css" />
 <script src="portfolio.js" defer></script>
 <script src="desktop.js" defer></script>
+<script src="stickers.js" defer></script>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
 <script>
 (function(){
@@ -410,6 +412,10 @@
     <a class="desktop-object hero-note" href="#interview"><small>NOTE TO SELF</small><span>让 AI 走出对话框，<br>进入真实世界。</span><span class="note-arrow" aria-hidden="true">↗</span></a>
     <a class="desktop-object hero-project" href="#repos" aria-label="查看角落搭子项目"><img src="assets/corner.png" alt="角落搭子项目截图，非个人宠物照片" width="230" height="180"/><span class="handwritten">a little side project</span></a>
     <svg class="desktop-flower" aria-hidden="true" viewBox="0 0 120 120"><g fill="#ffd54a" stroke="#e6b12c" stroke-width="1.5"><ellipse cx="60" cy="27" rx="14" ry="25"/><ellipse cx="60" cy="93" rx="14" ry="25"/><ellipse cx="27" cy="60" rx="25" ry="14"/><ellipse cx="93" cy="60" rx="25" ry="14"/><ellipse cx="37" cy="37" rx="13" ry="24" transform="rotate(-45 37 37)"/><ellipse cx="83" cy="83" rx="13" ry="24" transform="rotate(-45 83 83)"/><ellipse cx="83" cy="37" rx="13" ry="24" transform="rotate(45 83 37)"/><ellipse cx="37" cy="83" rx="13" ry="24" transform="rotate(45 37 83)"/></g><circle cx="60" cy="60" r="20" fill="#ad71ff"/><circle cx="54" cy="56" r="2"/><circle cx="66" cy="56" r="2"/><path d="M53 64q7 9 14 0" stroke="#171717" stroke-width="2" fill="none"/></svg>
+    <button class="site-sticker sticker-home sticker--hello" type="button" data-sticker="hello" data-feedback="你好呀，很高兴见到你！" aria-label="你好表情：点按打个招呼" disabled>
+      <span class="sticker-art" aria-hidden="true"><img class="sticker-image" src="assets/stickers/hello.webp" alt="" width="256" height="320" decoding="async" draggable="false"/><span class="sticker-fallback" hidden>你好</span></span>
+      <span class="sticker-caption" aria-hidden="true">你好</span><span class="sticker-feedback" role="status" aria-live="polite" aria-atomic="true"></span>
+    </button>
     <nav class="desktop-dock" aria-label="桌面快捷入口">
       <a class="dock-item dock-home" href="#home" aria-label="首页"><svg><use href="#icon-home"/></svg><span>首页</span></a>
       <a class="dock-item dock-about" href="#intern" aria-label="关于我"><img src="assets/avatar.jpg" alt=""/><span>关于我</span></a>
@@ -440,7 +446,15 @@
 <section id="repos">
   <div class="wrap">
     <div class="section-label"><span>SELECTED WORK</span><span>8 个现有开源项目</span></div>
-    <div class="sec-head work-heading"><h2 class="selection-heading handwritten">My Projects</h2><p>从真实工作流，到日常生活的灵感。<br>发布日期与 Star 数据未提供，暂不展示。</p></div>
+    <div class="sec-head work-heading">
+      <div class="sticker-title-row"><h2 class="selection-heading handwritten">My Projects</h2>
+        <button class="site-sticker sticker--work" type="button" data-sticker="work" data-feedback="把想法，做成作品。" aria-label="电脑工作表情：点按开工" disabled>
+          <span class="sticker-art" aria-hidden="true"><img class="sticker-image" src="assets/stickers/work.webp" alt="" width="256" height="320" loading="lazy" decoding="async" draggable="false"/><span class="sticker-fallback" hidden>开工</span></span>
+          <span class="sticker-caption" aria-hidden="true">开工</span><span class="sticker-feedback" role="status" aria-live="polite" aria-atomic="true"></span>
+        </button>
+      </div>
+      <p>从真实工作流，到日常生活的灵感。<br>发布日期与 Star 数据未提供，暂不展示。</p>
+    </div>
     <div class="work-toolbar"><div class="project-filters" role="group" aria-label="项目分类"><button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">全部作品 <sup>08</sup></button><button class="filter-btn" type="button" data-filter="product" aria-pressed="false">AI 与效率 <sup>05</sup></button><button class="filter-btn" type="button" data-filter="creative" aria-pressed="false">创意实验 <sup>03</sup></button></div><span class="work-count" id="workCount" aria-live="polite">SHOWING 08 PROJECTS</span></div>
     <div class="repos">
 
@@ -666,7 +680,15 @@
 <section id="playground" class="play-section">
   <div class="wrap">
     <div class="section-label"><span>03 / THE PLAYGROUND</span><span>LESS TALK. MORE INTERACTION.</span></div>
-    <div class="sec-head lab-heading"><h2>别只看，<br><em>亲手试试看。</em></h2><p><span class="live-dot" aria-hidden="true"></span> 无需安装，直接体验。<br><span class="lab-disclaimer">以下为本地交互演示，不调用真实 AI 服务。</span></p></div>
+    <div class="sec-head lab-heading">
+      <div class="sticker-title-row"><h2>别只看，<br><em>亲手试试看。</em></h2>
+        <button class="site-sticker sticker--cheer" type="button" data-sticker="cheer" data-feedback="加油，动手试试看！" aria-label="加油表情：点按为自己加油" disabled>
+          <span class="sticker-art" aria-hidden="true"><img class="sticker-image" src="assets/stickers/cheer.webp" alt="" width="256" height="320" loading="lazy" decoding="async" draggable="false"/><span class="sticker-fallback" hidden>加油</span></span>
+          <span class="sticker-caption" aria-hidden="true">加油</span><span class="sticker-feedback" role="status" aria-live="polite" aria-atomic="true"></span>
+        </button>
+      </div>
+      <p><span class="live-dot" aria-hidden="true"></span> 无需安装，直接体验。<br><span class="lab-disclaimer">以下为本地交互演示，不调用真实 AI 服务。</span></p>
+    </div>
     <div class="play-tabs" id="playTabs" role="tablist" aria-label="交互演示">
       <button class="ptab active" id="ptab-workbench" type="button" role="tab" aria-selected="true" aria-controls="panel-workbench" data-p="workbench"><i class="ptab-n" aria-hidden="true">01</i>综合工作台</button>
       <button class="ptab" id="ptab-kg" type="button" role="tab" aria-selected="false" aria-controls="panel-kg" tabindex="-1" data-p="kg"><i class="ptab-n" aria-hidden="true">02</i>企业知识库</button>
@@ -925,7 +947,13 @@
     <div class="iv-grid">
       <div class="iv-left">
         <div class="kicker">05 / A CONVERSATION</div>
-        <h2 class="iv-title">不如，<br><em>直接问我。</em></h2>
+        <div class="sticker-title-row">
+          <h2 class="iv-title">不如，<br><em>直接问我。</em></h2>
+          <button class="site-sticker sticker--think" type="button" data-sticker="think" data-feedback="好问题，一起想想。" aria-label="思考表情：点按一起想想" disabled>
+            <span class="sticker-art" aria-hidden="true"><img class="sticker-image" src="assets/stickers/think.webp" alt="" width="256" height="320" loading="lazy" decoding="async" draggable="false"/><span class="sticker-fallback" hidden>思考</span></span>
+            <span class="sticker-caption" aria-hidden="true">想想</span><span class="sticker-feedback" role="status" aria-live="polite" aria-atomic="true"></span>
+          </button>
+        </div>
         <p class="iv-sub">经历、项目，或是一次转向 AI 的决定。这个小助手用预设的公开资料回答，让你换一种方式认识我。无需联网，不接入真实大模型。</p>
         <div class="iv-hint"><span class="dotp"></span>点一下，像真面试官一样追问</div>
         <div class="iv-chips" id="ivChips">
@@ -977,7 +1005,15 @@
 <section class="contact-section" id="contact">
   <div class="wrap">
     <div class="section-label"><span>06 / WHAT’S NEXT?</span><span>GOOD THINGS START WITH A HELLO.</span></div>
-    <div class="contact-main"><h2>下一次，<br>一起做点<span>不一样。</span></h2><a class="contact-orb" href="mailto:huanpeng69@gmail.com" aria-label="发邮件给李焕鹏" data-magnetic><span aria-hidden="true">↗</span><small>LET’S TALK</small></a></div>
+    <div class="contact-main"><h2>下一次，<br>一起做点<span>不一样。</span></h2>
+      <div class="contact-sticker-group">
+        <button class="site-sticker sticker--heart" type="button" data-sticker="heart" data-feedback="谢谢你来看我的作品！" aria-label="爱心表情：点按送出感谢" disabled>
+          <span class="sticker-art" aria-hidden="true"><img class="sticker-image" src="assets/stickers/heart.webp" alt="" width="256" height="320" loading="lazy" decoding="async" draggable="false"/><span class="sticker-fallback" hidden>感谢</span></span>
+          <span class="sticker-caption" aria-hidden="true">比心</span><span class="sticker-feedback" role="status" aria-live="polite" aria-atomic="true"></span>
+        </button>
+        <a class="contact-orb" href="mailto:huanpeng69@gmail.com" aria-label="发邮件给李焕鹏" data-magnetic><span aria-hidden="true">↗</span><small>LET’S TALK</small></a>
+      </div>
+    </div>
     <div class="contact-bottom"><div><p>有个想法？来聊聊。</p><a class="contact-email" href="mailto:huanpeng69@gmail.com">huanpeng69@gmail.com <span aria-hidden="true">↗</span></a><button class="copy-email" id="copyEmail" type="button" aria-label="复制邮箱地址">复制邮箱</button></div><a class="contact-github" href="https://github.com/huanpeng69-cmyk" target="_blank" rel="noopener noreferrer">也可以在 GitHub 找到我 <span aria-hidden="true">↗</span></a></div>
   </div>
 </section>

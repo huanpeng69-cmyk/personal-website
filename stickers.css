@@ -1,0 +1,154 @@
+/* Supplied sticker artwork: presentation only, no project/demo rules changed. */
+.site-sticker {
+  --sticker-size: 112px;
+  --sticker-idle: sticker-sway;
+  --sticker-duration: 5.4s;
+  --sticker-reaction: sticker-wave;
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-content: start;
+  flex: 0 0 auto;
+  width: var(--sticker-size);
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: #425764;
+  font: inherit;
+  line-height: 1;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  cursor: pointer;
+  isolation: isolate;
+}
+.site-sticker:disabled { opacity: 1; cursor: default; }
+.site-sticker:focus-visible { outline: 2px solid #347bae; outline-offset: 6px; }
+.sticker-art {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  transform-origin: 50% 82%;
+  filter: drop-shadow(0 4px 3px #233b5015);
+  animation: var(--sticker-idle) var(--sticker-duration) ease-in-out infinite;
+  animation-play-state: paused;
+}
+.sticker-image { display: block; width: 100%; height: 100%; object-fit: contain; transform-origin: 50% 80%; user-select: none; }
+.site-sticker[data-ready="true"][data-in-view="true"] .sticker-art { animation-play-state: running; }
+.site-sticker[data-in-view="true"].is-reacting .sticker-art { animation-play-state: paused; }
+.site-sticker.is-reacting .sticker-image { animation: var(--sticker-reaction) .95s ease-in-out both; }
+.site-sticker:not([data-in-view="true"]) .sticker-image { animation-play-state: paused; }
+.sticker-caption {
+  display: block;
+  position: relative;
+  margin-top: 3px;
+  padding: 5px 8px;
+  border: 1px solid #b6c3ca75;
+  border-radius: 99px;
+  background: #ffffffe3;
+  color: #506571;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: border-color .2s, color .2s;
+}
+.site-sticker[data-ready="true"] .sticker-caption::before { content: "点我 · "; }
+.site-sticker:not(:disabled):hover .sticker-caption,
+.site-sticker:focus-visible .sticker-caption { color: #234d69; border-color: #7da5bf; }
+.sticker-feedback {
+  position: absolute;
+  z-index: 2;
+  bottom: calc(100% + 12px);
+  right: 0;
+  width: max-content;
+  max-width: 164px;
+  padding: 8px 11px;
+  border: 1px solid #cddbe3;
+  border-radius: 12px 12px 3px 12px;
+  background: #fff;
+  box-shadow: 0 3px 12px #29455316;
+  color: #344f61;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity .16s, transform .16s;
+}
+.site-sticker.has-feedback .sticker-feedback { opacity: 1; visibility: visible; transform: translateY(-4px); }
+.sticker-fallback:not([hidden]) {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed #b7c8d3;
+  border-radius: 22px;
+  background: #f3f7f9;
+  color: #486674;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.site-sticker.is-unavailable .sticker-image { display: none; }
+.site-sticker.is-unavailable .sticker-art { animation: none; }
+
+/* The original hero objects keep their coordinates. The sticker uses the gap. */
+.sticker-home { --sticker-size: clamp(60px, 7vw, 110px); position: absolute; left: 35%; bottom: 20%; z-index: 4; }
+.sticker-title-row { display: flex; align-items: center; gap: 24px; min-width: 0; }
+.sticker-title-row > h2 { min-width: 0; }
+.work-heading .sticker-title-row { justify-content: center; }
+.work-heading .site-sticker { --sticker-size: 106px; }
+.lab-heading .sticker-title-row { gap: 26px; }
+.lab-heading .site-sticker { --sticker-size: 102px; }
+.iv-left .sticker-title-row { justify-content: space-between; gap: 14px; margin-block: 14px; }
+.iv-left .sticker-title-row .iv-title { margin: 0; }
+.iv-left .site-sticker { --sticker-size: 96px; }
+.contact-sticker-group { display: flex; flex: 0 0 auto; align-items: center; gap: 28px; }
+.contact-sticker-group .site-sticker { --sticker-size: 110px; }
+.sticker--work { --sticker-idle: sticker-nod; --sticker-duration: 5.8s; --sticker-reaction: sticker-work; }
+.sticker--cheer { --sticker-idle: sticker-float; --sticker-duration: 4.2s; --sticker-reaction: sticker-jump; }
+.sticker--think { --sticker-idle: sticker-ponder; --sticker-duration: 6.2s; --sticker-reaction: sticker-think; }
+.sticker--heart { --sticker-idle: sticker-breathe; --sticker-duration: 4.8s; --sticker-reaction: sticker-heart; }
+
+@keyframes sticker-sway { 0%,100% { transform: rotate(-2deg); } 50% { transform: translateY(-3px) rotate(2deg); } }
+@keyframes sticker-nod { 0%,100% { transform: translateY(0); } 45% { transform: translateY(2px) rotate(1.5deg); } 65% { transform: translateY(-2px); } }
+@keyframes sticker-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes sticker-ponder { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(2deg); } }
+@keyframes sticker-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+@keyframes sticker-wave { 0%,100% { transform: rotate(0); } 20%,60% { transform: rotate(-9deg); } 40%,80% { transform: rotate(8deg); } }
+@keyframes sticker-work { 0%,100% { transform: translateY(0) rotate(0); } 20%,55% { transform: translateY(3px) rotate(-3deg); } 38%,75% { transform: translateY(-4px) rotate(3deg); } }
+@keyframes sticker-jump { 0%,100% { transform: translateY(0) scale(1); } 18% { transform: translateY(3px) scale(1.03,.95); } 42% { transform: translateY(-15px) rotate(-5deg); } 65% { transform: translateY(0) scale(1.04,.96); } 82% { transform: translateY(-6px) rotate(3deg); } }
+@keyframes sticker-think { 0%,100% { transform: rotate(0); } 30% { transform: rotate(-11deg) translateY(-3px); } 65% { transform: rotate(7deg); } }
+@keyframes sticker-heart { 0%,100% { transform: scale(1); } 25%,65% { transform: scale(1.12); } 45%,85% { transform: scale(1.02); } }
+
+@media (max-width: 1100px) {
+  .contact-sticker-group { gap: 18px; }
+  .contact-sticker-group .site-sticker { --sticker-size: 94px; }
+}
+@media (max-width: 720px) {
+  .sticker-home { --sticker-size: clamp(46px, 14vw, 74px); left: 44%; bottom: 18%; }
+  .sticker-home .sticker-caption { font-size: 11px; padding: 4px 6px; }
+  .sticker-home[data-ready="true"] .sticker-caption::before { content: none; }
+  .sticker-title-row { gap: 12px; }
+  .work-heading .sticker-title-row { flex-direction: column-reverse; gap: 22px; }
+  .work-heading .site-sticker { --sticker-size: 82px; }
+  .lab-heading .sticker-title-row { width: 100%; justify-content: space-between; gap: 12px; }
+  .lab-heading .site-sticker { --sticker-size: 76px; }
+  .iv-left .site-sticker { --sticker-size: 78px; }
+  .contact-sticker-group { flex-direction: column; gap: 15px; }
+  .contact-sticker-group .site-sticker { --sticker-size: 78px; }
+}
+/* Honor both the existing site switch and an OS preference, including mid-reaction. */
+body.motion-off .site-sticker *,
+body.motion-off .site-sticker *::before { animation: none !important; transition: none !important; }
+html.stickers-paused .site-sticker * { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .site-sticker *, .site-sticker *::before { animation: none !important; transition: none !important; }
+}
+@media print { .site-sticker { display: none !important; } }
